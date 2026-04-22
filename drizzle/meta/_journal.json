@@ -1,5 +1,27 @@
 {
   "version": "7",
   "dialect": "mysql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1776887781547,
+      "tag": "0000_fast_sage",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1776887980115,
+      "tag": "0001_uneven_gauntlet",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1776888026315,
+      "tag": "0002_quick_nova",
+      "breakpoints": true
+    }
+  ]
 }
