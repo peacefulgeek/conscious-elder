@@ -116,3 +116,30 @@
 - [x] TypeScript check passes (pnpm check)
 - [x] Vitest tests pass (22 tests in 2 files)
 - [x] .do/app.yaml committed
+
+## Design Rebuild (Critical Fixes)
+- [x] Remove all dark/black colors from CSS - full warm cream palette throughout
+- [x] Source unique Unsplash images for all 30 articles (topic-matched)
+- [x] Source unique hero images for Home, Articles, Recommended, About pages
+- [x] Update all article imageUrl and heroImageUrl in database
+- [x] Rebuild Home page: warm hero, two-column article feed with images + bylines
+- [x] Rebuild Articles index: two-column grid, images, bylines, category badges
+- [x] Rebuild ArticleDetail: full-width hero image, byline header, warm body
+- [x] Rebuild SiteNav: cream/warm background, no dark overlay
+- [x] Rebuild Recommended page with warm design
+- [x] Rebuild About page with warm design
+- [x] Rebuild Footer with warm design
+- [x] Epic, unique, stunning visual identity throughout
+
+## Assessment and Quizzes Feature
+- [x] DB table: quiz_results (id, userId, quizId, domain, score, tier, answers JSON, createdAt)
+- [x] 6 quiz definitions in shared/quizzes.ts with scored questions
+- [x] Quiz scoring engine: domain score, tier (Thriving/Growing/Needs Attention), narrative
+- [x] tRPC router: assessments.list, assessments.getQuiz, assessments.score, assessments.history, assessments.latestResult
+- [x] Assessment Hub page (/assessments) with hero image and 6 quiz cards
+- [x] Quiz page (/assessments/[quizId]) with progress bar and animated question flow
+- [x] Results page with score breakdown, personalized narrative, 4-6 Amazon recommendations
+- [x] Amazon recommendations: verified ASINs, tag=spankyspinola-20, labeled (paid link)
+- [x] Nav link added: Assessments in SiteNav
+- [x] Route registered in App.tsx
+- [x] Vitest tests for scoring engine (27 tests, all passing)

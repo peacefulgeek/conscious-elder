@@ -82,3 +82,22 @@ export const products = mysqlTable("products", {
 
 export type Product = typeof products.$inferSelect;
 export type InsertProduct = typeof products.$inferInsert;
+
+/**
+ * Quiz results table - stores assessment results for logged-in users.
+ * answers stored as JSON string for TiDB compatibility.
+ */
+export const quizResults = mysqlTable("quiz_results", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  quizId: varchar("quizId", { length: 64 }).notNull(),
+  domain: varchar("domain", { length: 128 }).notNull(),
+  score: int("score").notNull(),
+  maxScore: int("maxScore").notNull(),
+  tier: mysqlEnum("tier", ["thriving", "growing", "needs-attention"]).notNull(),
+  answers: text("answers").default("[]"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type QuizResult = typeof quizResults.$inferSelect;
+export type InsertQuizResult = typeof quizResults.$inferInsert;

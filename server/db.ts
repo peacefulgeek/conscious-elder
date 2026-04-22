@@ -1,6 +1,6 @@
 import { eq, desc, like, and, or, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, articles, products, Article, InsertArticle, Product, InsertProduct } from "../drizzle/schema";
+import { InsertUser, users, articles, products, quizResults, Article, InsertArticle, Product, InsertProduct, InsertQuizResult } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -184,4 +184,32 @@ export async function getProductsForSpotlight() {
     .where(eq(products.status, 'valid'))
     .orderBy(sql`COALESCE(${products.lastSpotlightedAt}, '1970-01-01') ASC`)
     .limit(10);
+}
+
+// ─── Quiz result helpers ──────────────────────────────────────────
+
+export async function saveQuizResult(result: InsertQuizResult) {
+  const db = await getDb();
+  if (!db) throw new Error('Database not available');
+  const inserted = await db.insert(quizResults).values(result);
+  return inserted;
+}
+
+export async function getQuizHistory(userId: number, limit = 20) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(quizResults)
+    .where(eq(quizResults.userId, userId))
+    .orderBy(desc(quizResults.createdAt))
+    .limit(limit);
+}
+
+export async function getLatestQuizResultByDomain(userId: number, quizId: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(quizResults)
+    .where(and(eq(quizResults.userId, userId), eq(quizResults.quizId, quizId)))
+    .orderBy(desc(quizResults.createdAt))
+    .limit(1);
+  return result[0] ?? null;
 }

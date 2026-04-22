@@ -5,8 +5,10 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import {
   getPublishedArticles, getArticleBySlug, searchArticles,
-  getArticleCount, getValidProducts
+  getArticleCount, getValidProducts, saveQuizResult, getQuizHistory, getLatestQuizResultByDomain
 } from "./db";
+import { protectedProcedure } from "./_core/trpc";
+import { QUIZZES, QUIZ_MAP, scoreToTier } from "../shared/quizzes";
 
 export const appRouter = router({
   system: systemRouter,
@@ -60,6 +62,105 @@ export const appRouter = router({
       .query(async ({ input }) => {
         const { limit = 40 } = input ?? {};
         return getValidProducts(limit);
+      }),
+  }),
+
+  assessments: router({
+    // Return all quiz definitions (metadata only, no answers)
+    list: publicProcedure.query(() => {
+      return QUIZZES.map(q => ({
+        id: q.id,
+        domain: q.domain,
+        title: q.title,
+        subtitle: q.subtitle,
+        heroImage: q.heroImage,
+        heroAlt: q.heroAlt,
+        icon: q.icon,
+        color: q.color,
+        questionCount: q.questions.length,
+      }));
+    }),
+
+    // Return a single quiz definition with all questions
+    getQuiz: publicProcedure
+      .input(z.object({ quizId: z.string() }))
+      .query(({ input }) => {
+        const quiz = QUIZ_MAP[input.quizId];
+        if (!quiz) throw new Error('Quiz not found');
+        return {
+          id: quiz.id,
+          domain: quiz.domain,
+          title: quiz.title,
+          subtitle: quiz.subtitle,
+          heroImage: quiz.heroImage,
+          heroAlt: quiz.heroAlt,
+          icon: quiz.icon,
+          color: quiz.color,
+          questions: quiz.questions,
+        };
+      }),
+
+    // Score a completed quiz and return results + recommendations
+    // Works for anonymous users too (no DB save)
+    score: publicProcedure
+      .input(z.object({
+        quizId: z.string(),
+        answers: z.array(z.object({ questionId: z.string(), value: z.number().min(1).max(5) })),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const quiz = QUIZ_MAP[input.quizId];
+        if (!quiz) throw new Error('Quiz not found');
+
+        const totalScore = input.answers.reduce((sum, a) => sum + a.value, 0);
+        const maxScore = quiz.questions.length * 5;
+        const tier = scoreToTier(totalScore, maxScore);
+        const tierResult = quiz.tiers[tier];
+
+        // Save to DB if user is logged in
+        if (ctx.user) {
+          try {
+            await saveQuizResult({
+              userId: ctx.user.id,
+              quizId: input.quizId,
+              domain: quiz.domain,
+              score: totalScore,
+              maxScore,
+              tier,
+              answers: JSON.stringify(input.answers),
+            });
+          } catch (err) {
+            console.error('[assessments.score] Failed to save result:', err);
+          }
+        }
+
+        return {
+          quizId: input.quizId,
+          domain: quiz.domain,
+          score: totalScore,
+          maxScore,
+          percentage: Math.round((totalScore / maxScore) * 100),
+          tier,
+          tierLabel: tierResult.label,
+          headline: tierResult.headline,
+          narrative: tierResult.narrative,
+          recommendations: tierResult.recommendations,
+          saved: !!ctx.user,
+        };
+      }),
+
+    // Get quiz history for logged-in user
+    history: protectedProcedure
+      .input(z.object({ limit: z.number().min(1).max(50).default(20) }).optional())
+      .query(async ({ ctx, input }) => {
+        const { limit = 20 } = input ?? {};
+        return getQuizHistory(ctx.user.id, limit);
+      }),
+
+    // Get latest result for a specific quiz (for logged-in user)
+    latestResult: protectedProcedure
+      .input(z.object({ quizId: z.string() }))
+      .query(async ({ ctx, input }) => {
+        return getLatestQuizResultByDomain(ctx.user.id, input.quizId);
       }),
   }),
 });
