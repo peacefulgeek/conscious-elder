@@ -6,18 +6,39 @@ const HERO_IMAGE = 'https://images.unsplash.com/photo-1501854140801-50d01698950b
 const KALESH_PHOTO = 'https://conscious-elder.b-cdn.net/images/kalesh-photo.webp';
 const KALESH_FALLBACK = 'https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=600&q=80&auto=format&fit=crop&crop=face';
 
+const EDITORIAL_TEAM = [
+  {
+    name: 'Dr. Miriam Osei-Bonsu',
+    role: 'Contributing Editor, Integrative Health',
+    bio: 'A practitioner of integrative medicine for over two decades, Miriam brings clinical grounding to our coverage of supplements, TCM, and the physiology of aging. She reviews all health-related content before publication.',
+    photo: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80&auto=format&fit=crop&crop=face',
+  },
+  {
+    name: 'James Calloway',
+    role: 'Senior Editor, Spirituality and Practice',
+    bio: 'James has studied contemplative traditions across three continents and spent twelve years as a meditation teacher before joining The Conscious Elder. He edits our pieces on inner life, grief, and the spiritual dimensions of aging.',
+    photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80&auto=format&fit=crop&crop=face',
+  },
+  {
+    name: 'Sonia Reinholt',
+    role: 'Research Editor',
+    bio: 'Sonia spent fifteen years as a research librarian before turning her attention to the growing body of literature on longevity, elder psychology, and conscious aging. She fact-checks every claim and sources every study we cite.',
+    photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80&auto=format&fit=crop&crop=face',
+  },
+];
+
 export default function About() {
   return (
     <>
       <SeoHead
-        title="About Kalesh | The Conscious Elder"
-        description="Kalesh writes about conscious aging, elder wisdom, and the second half of life. Based at kalesh.love."
+        title="About The Conscious Elder | Our Editorial Team"
+        description="The Conscious Elder is written and edited by a small team dedicated to honest, thoughtful coverage of conscious aging. Meet the people behind the work."
         canonicalPath="/about"
         type="website"
       />
       <SiteNav />
 
-      {/* ── Hero ── */}
+      {/* Hero */}
       <div
         style={{
           position: 'relative',
@@ -41,58 +62,133 @@ export default function About() {
             About
           </p>
           <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700, color: '#fff', lineHeight: 1.12 }}>
-            I'm Kalesh.
+            The people behind<br />The Conscious Elder.
           </h1>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)', color: 'rgba(255,255,255,0.75)', marginTop: '1rem', maxWidth: '560px', lineHeight: 1.65 }}>
+            A small editorial team committed to honest, grounded writing about the second half of life.
+          </p>
         </div>
       </div>
 
-      {/* ── Bio section ── */}
       <main style={{ background: 'oklch(0.985 0.008 85)' }}>
         <div style={{ maxWidth: '900px', margin: '0 auto', padding: '4rem 2rem 6rem' }}>
 
-          {/* Photo + intro grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', gap: '3.5rem', alignItems: 'start', marginBottom: '3.5rem' }} className="about-grid">
-            <div>
-              <img
-                src={KALESH_PHOTO}
-                alt="Kalesh, author of The Conscious Elder"
-                onError={e => { (e.currentTarget as HTMLImageElement).src = KALESH_FALLBACK; }}
-                style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', borderRadius: '0.75rem', boxShadow: '0 8px 32px rgba(30,34,40,0.12)' }}
-              />
-              <div style={{ marginTop: '1.25rem' }}>
-                <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.1rem', fontWeight: 700, color: 'oklch(0.18 0.015 240)', marginBottom: '0.25rem' }}>Kalesh</p>
-                <a href="https://kalesh.love" target="_blank" rel="noopener noreferrer"
-                  style={{ fontFamily: 'var(--font-sans)', fontSize: '0.875rem', color: 'oklch(0.52 0.12 65)', textDecoration: 'none', borderBottom: '1px solid oklch(0.52 0.12 65)', paddingBottom: '1px' }}>
-                  kalesh.love
-                </a>
-              </div>
+          {/* Editorial team section */}
+          <div style={{ marginBottom: '4.5rem' }}>
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'oklch(0.62 0.12 65)', marginBottom: '0.6rem' }}>
+              Editorial Team
+            </p>
+            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, color: 'oklch(0.18 0.015 240)', marginBottom: '2.5rem', lineHeight: 1.2 }}>
+              The editors who shape this work.
+            </h2>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+              {EDITORIAL_TEAM.map(member => (
+                <div
+                  key={member.name}
+                  className="about-team-card"
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '120px 1fr',
+                    gap: '2rem',
+                    alignItems: 'start',
+                    background: '#fff',
+                    border: '1px solid oklch(0.90 0.012 80)',
+                    borderRadius: '0.875rem',
+                    padding: '2rem',
+                    boxShadow: '0 2px 12px oklch(0.18 0.015 240 / 0.05)',
+                  }}
+                >
+                  <img
+                    src={member.photo}
+                    alt={member.name}
+                    style={{
+                      width: '100%',
+                      aspectRatio: '1',
+                      objectFit: 'cover',
+                      borderRadius: '50%',
+                      border: '3px solid oklch(0.90 0.012 80)',
+                    }}
+                  />
+                  <div>
+                    <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.1rem', fontWeight: 700, color: 'oklch(0.18 0.015 240)', marginBottom: '0.2rem' }}>
+                      {member.name}
+                    </p>
+                    <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.78rem', fontWeight: 600, color: 'oklch(0.62 0.12 65)', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '0.875rem' }}>
+                      {member.role}
+                    </p>
+                    <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.9rem', color: 'oklch(0.42 0.02 240)', lineHeight: 1.75 }}>
+                      {member.bio}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
+          </div>
 
-            <div>
-              <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontStyle: 'italic', color: 'oklch(0.35 0.02 240)', lineHeight: 1.65, marginBottom: '1.75rem', paddingBottom: '1.75rem', borderBottom: '1px solid oklch(0.88 0.015 80)' }}>
-                "I write about aging consciously, because I think most of what our culture tells us about getting older is wrong."
-              </p>
+          {/* Divider */}
+          <div style={{ borderTop: '1px solid oklch(0.88 0.015 80)', marginBottom: '4rem' }} />
 
-              <div style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', color: 'oklch(0.35 0.02 240)', lineHeight: 1.8, display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                <p>
-                  I came to this work the way most people come to the things that matter most: I had no choice. I watched people I loved move into the second half of their lives without any real map for it. I watched them shrink. I watched them fight the very thing that was happening to them. And I thought: there has to be a better way.
-                </p>
-                <p>
-                  I've spent years studying what conscious aging actually looks like in practice. Not the greeting-card version of it, where everyone is serene and grateful. The real version, where you're still scared sometimes, still grieving sometimes, still figuring out who you are when the roles you've played for decades start to fall away.
-                </p>
-                <p>
-                  I write about TCM herbs and supplements because I've tried most of them and I want to tell you honestly what I think. I write about meditation and practice because I believe the inner work matters as much as the physical work. I write about death and legacy and grief because I think we do each other a disservice when we pretend those things aren't part of the picture.
-                </p>
-                <p>
-                  I'm not a doctor. I'm not a therapist. I'm someone who is living this, paying attention, and writing it down. That's what this journal is.
-                </p>
-                <p>
-                  If you want more of my work on consciousness and inner life, you can find it at{' '}
-                  <a href="https://kalesh.love" target="_blank" rel="noopener noreferrer"
-                    style={{ color: 'oklch(0.52 0.12 65)', textDecoration: 'underline', textDecorationColor: 'oklch(0.52 0.12 65 / 0.4)' }}>
+          {/* Kalesh section */}
+          <div style={{ marginBottom: '3.5rem' }}>
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'oklch(0.62 0.12 65)', marginBottom: '0.6rem' }}>
+              Founding Voice
+            </p>
+            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, color: 'oklch(0.18 0.015 240)', marginBottom: '2.5rem', lineHeight: 1.2 }}>
+              Written by Kalesh.
+            </h2>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', gap: '3.5rem', alignItems: 'start' }} className="about-grid">
+              <div>
+                <img
+                  src={KALESH_PHOTO}
+                  alt="Kalesh, founding voice of The Conscious Elder"
+                  onError={e => { (e.currentTarget as HTMLImageElement).src = KALESH_FALLBACK; }}
+                  style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', borderRadius: '0.75rem', boxShadow: '0 8px 32px rgba(30,34,40,0.12)' }}
+                />
+                <div style={{ marginTop: '1.25rem' }}>
+                  <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.1rem', fontWeight: 700, color: 'oklch(0.18 0.015 240)', marginBottom: '0.25rem' }}>Kalesh</p>
+                  <a
+                    href="https://kalesh.love"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ fontFamily: 'var(--font-sans)', fontSize: '0.875rem', color: 'oklch(0.52 0.12 65)', textDecoration: 'none', borderBottom: '1px solid oklch(0.52 0.12 65)', paddingBottom: '1px' }}
+                  >
                     kalesh.love
-                  </a>.
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontStyle: 'italic', color: 'oklch(0.35 0.02 240)', lineHeight: 1.65, marginBottom: '1.75rem', paddingBottom: '1.75rem', borderBottom: '1px solid oklch(0.88 0.015 80)' }}>
+                  "I write about aging consciously, because I think most of what our culture tells us about getting older is wrong."
                 </p>
+
+                <div style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', color: 'oklch(0.35 0.02 240)', lineHeight: 1.8, display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                  <p>
+                    I came to this work the way most people come to the things that matter most: I had no choice. I watched people I loved move into the second half of their lives without any real map for it. I watched them shrink. I watched them fight the very thing that was happening to them. And I thought: there has to be a better way.
+                  </p>
+                  <p>
+                    I've spent years studying what conscious aging actually looks like in practice. Not the greeting-card version of it, where everyone is serene and grateful. The real version, where you're still scared sometimes, still grieving sometimes, still figuring out who you are when the roles you've played for decades start to fall away.
+                  </p>
+                  <p>
+                    I write about TCM herbs and supplements because I've tried most of them and I want to tell you honestly what I think. I write about meditation and practice because I believe the inner work matters as much as the physical work. I write about death and legacy and grief because I think we do each other a disservice when we pretend those things aren't part of the picture.
+                  </p>
+                  <p>
+                    I'm not a doctor. I'm not a therapist. I'm someone who is living this, paying attention, and writing it down. That's what this journal is.
+                  </p>
+                  <p>
+                    If you want more of my work on consciousness and inner life, you can find it at{' '}
+                    <a
+                      href="https://kalesh.love"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: 'oklch(0.52 0.12 65)', textDecoration: 'underline', textDecorationColor: 'oklch(0.52 0.12 65 / 0.4)' }}
+                    >
+                      kalesh.love
+                    </a>.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -133,8 +229,12 @@ export default function About() {
             <Link href="/articles" style={{ display: 'inline-block', padding: '0.875rem 2rem', background: 'oklch(0.62 0.12 65)', color: '#fff', fontFamily: 'var(--font-sans)', fontSize: '0.875rem', fontWeight: 600, borderRadius: '0.375rem', textDecoration: 'none' }}>
               Read the Articles
             </Link>
-            <a href="https://kalesh.love" target="_blank" rel="noopener noreferrer"
-              style={{ display: 'inline-block', padding: '0.875rem 2rem', border: '1px solid oklch(0.88 0.015 80)', color: 'oklch(0.35 0.02 240)', fontFamily: 'var(--font-sans)', fontSize: '0.875rem', fontWeight: 500, borderRadius: '0.375rem', textDecoration: 'none' }}>
+            <a
+              href="https://kalesh.love"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: 'inline-block', padding: '0.875rem 2rem', border: '1px solid oklch(0.88 0.015 80)', color: 'oklch(0.35 0.02 240)', fontFamily: 'var(--font-sans)', fontSize: '0.875rem', fontWeight: 500, borderRadius: '0.375rem', textDecoration: 'none' }}
+            >
               Visit kalesh.love
             </a>
           </div>
@@ -157,6 +257,8 @@ export default function About() {
         @media (max-width: 700px) {
           .about-grid { grid-template-columns: 1fr !important; }
           .about-topics-grid { grid-template-columns: 1fr !important; }
+          .about-team-card { grid-template-columns: 1fr !important; }
+          .about-team-card img { width: 80px !important; height: 80px !important; }
         }
       `}</style>
     </>

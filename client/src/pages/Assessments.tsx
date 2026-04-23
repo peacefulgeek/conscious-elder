@@ -234,24 +234,42 @@ export default function Assessments() {
                 <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.95rem', color: 'oklch(0.45 0.02 240)', lineHeight: 1.65, maxWidth: '520px', margin: '0 auto 1.75rem' }}>
                   Most people are thriving in one or two domains and quietly struggling in others. The full picture is always more useful than a partial one.
                 </p>
-                <Link href={`/assessments/${quizzes?.[0]?.id ?? 'physical-wellness'}`}
-                  style={{
-                    display: 'inline-block',
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '0.9rem',
-                    fontWeight: 600,
-                    padding: '0.875rem 2.25rem',
-                    background: 'oklch(0.62 0.12 65)',
-                    color: '#fff',
-                    borderRadius: '0.5rem',
-                    textDecoration: 'none',
-                    transition: 'background 0.2s',
-                  }}
-                  onMouseEnter={e => ((e.target as HTMLElement).style.background = 'oklch(0.52 0.12 65)')}
-                  onMouseLeave={e => ((e.target as HTMLElement).style.background = 'oklch(0.62 0.12 65)')}
-                >
-                  Start with Physical Wellness
-                </Link>
+                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <Link href={`/assessments/${quizzes?.[0]?.id ?? 'physical-wellness'}`}
+                    style={{
+                      display: 'inline-block',
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '0.9rem',
+                      fontWeight: 600,
+                      padding: '0.875rem 2.25rem',
+                      background: 'oklch(0.62 0.12 65)',
+                      color: '#fff',
+                      borderRadius: '0.5rem',
+                      textDecoration: 'none',
+                      transition: 'background 0.2s',
+                    }}
+                    onMouseEnter={e => ((e.target as HTMLElement).style.background = 'oklch(0.52 0.12 65)')}
+                    onMouseLeave={e => ((e.target as HTMLElement).style.background = 'oklch(0.62 0.12 65)')}
+                  >
+                    Start with Physical Wellness
+                  </Link>
+                  <Link href="/assessments/history"
+                    style={{
+                      display: 'inline-block',
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '0.9rem',
+                      fontWeight: 500,
+                      padding: '0.875rem 2.25rem',
+                      border: '1px solid oklch(0.88 0.015 80)',
+                      color: 'oklch(0.35 0.02 240)',
+                      borderRadius: '0.5rem',
+                      textDecoration: 'none',
+                      background: 'transparent',
+                    }}
+                  >
+                    View my history
+                  </Link>
+                </div>
               </div>
             </>
           )}

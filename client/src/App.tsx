@@ -12,7 +12,8 @@ import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Assessments from "./pages/Assessments";
 import Quiz from "./pages/Quiz";
-import QuizResults from "./pages/QuizResults";
+import QuizResults from './pages/QuizResults';
+import AssessmentHistory from './pages/AssessmentHistory';
 
 function Router() {
   return (
@@ -24,6 +25,7 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/assessments" component={Assessments} />
+      <Route path="/assessments/history" component={AssessmentHistory} />
       <Route path="/assessments/:quizId/results" component={QuizResults} />
       <Route path="/assessments/:quizId" component={Quiz} />
       <Route path="/404" component={NotFound} />

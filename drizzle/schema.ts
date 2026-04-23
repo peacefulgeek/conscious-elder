@@ -71,6 +71,8 @@ export const products = mysqlTable("products", {
   id: int("id").autoincrement().primaryKey(),
   asin: varchar("asin", { length: 10 }).notNull().unique(),
   name: varchar("name", { length: 512 }).notNull(),
+  description: text("description"),
+  imageUrl: text("imageUrl"),
   category: varchar("category", { length: 128 }).notNull(),
   tags: text("tags").default("[]"),
   verifiedAt: timestamp("verifiedAt"),
