@@ -145,8 +145,18 @@
 - [x] Vitest tests for scoring engine (27 tests, all passing)
 
 ## Fixes and Deployment
-- [ ] Hero title: split onto two lines ("The second half of life" / "is not a decline.")
-- [ ] Push to GitHub: peacefulgeek/conscious-elder via SSH
+- [x] Hero title: split onto two lines (block spans, guaranteed at all viewports)
+- [x] Push to GitHub: peacefulgeek/conscious-elder (HTTPS with token, commit 154ba5f)
 
-- [ ] Push to peacefulgeek/conscious-elder on GitHub via SSH
-- [ ] Mobile responsiveness audit: SiteNav hamburger, hero text, article grid, quiz flow, results page, assessments hub, recommended, about, privacy
+- [x] Push to peacefulgeek/conscious-elder on GitHub (HTTPS with token)
+- [x] Mobile responsiveness audit complete: all pages have responsive class hooks
+- [x] Home: ce-featured-grid, ce-article-grid, ce-footer-grid, ce-section
+- [x] Articles: ce-filter-row, ce-article-grid
+- [x] ArticleDetail: ce-article-hero (55vw height on mobile)
+- [x] Recommended: product-grid (1-col on mobile, 2-col on tablet)
+- [x] About: about-grid, about-topics-grid
+- [x] Assessments: ce-quiz-grid
+- [x] Quiz: ce-quiz-card, ce-likert-row
+- [x] QuizResults: flex-column recommendation list (wraps naturally)
+- [x] Privacy: single-column, already mobile-safe
+- [x] SiteNav: hamburger menu at 768px breakpoint
