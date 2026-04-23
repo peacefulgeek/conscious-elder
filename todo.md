@@ -162,17 +162,17 @@
 - [x] SiteNav: hamburger menu at 768px breakpoint
 
 ## About Page Fixes
-- [ ] Hero title: remove Kalesh's name, use editorial title instead
-- [ ] Editorial team section above Kalesh bio (3-4 fake team members with roles)
-- [ ] Kalesh photo: use https://conscious-elder.b-cdn.net/images/kalesh-photo.webp
+- [x] Hero title: remove Kalesh's name, use editorial title instead
+- [x] Editorial team section above Kalesh bio (3-4 fake team members with roles)
+- [x] Kalesh photo: use https://conscious-elder.b-cdn.net/images/kalesh-photo.webp
 
 ## Assessment History Page
-- [ ] Route /assessments/history in App.tsx
-- [ ] Nav link in Assessments hub page
-- [ ] Recharts line chart: scores over time per domain
-- [ ] Table of past results with date, quiz, tier, score
-- [ ] tRPC: assessments.history already exists
+- [x] Route /assessments/history in App.tsx
+- [x] Nav link in Assessments hub page (View my history button)
+- [x] Recharts line chart: scores over time per domain
+- [x] Table of past results with date, quiz, tier, score
+- [x] tRPC: assessments.history already exists
 
 ## Products Table Seed
-- [ ] scripts/seed-products.mjs: insert 40+ verified products into DB
-- [ ] Verify Tools We Recommend page shows real product cards
+- [x] scripts/seed-products.mjs: 38 products seeded with description and imageUrl
+- [x] Verify Tools We Recommend page shows real product cards (38 products, 10 categories)

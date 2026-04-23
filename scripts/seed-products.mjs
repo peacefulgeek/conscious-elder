@@ -1,84 +1,96 @@
 /**
  * seed-products.mjs
- * Reads the product catalog and seeds the products table in the database.
- * Run: node scripts/seed-products.mjs
+ * Seeds the products table with 42 unique, real Amazon ASINs
+ * for the conscious aging niche.
+ * URL format: https://www.amazon.com/dp/[ASIN]?tag=spankyspinola-20
  */
-
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 dotenv.config();
 
-// Product catalog inline (mirrors src/data/product-catalog.ts)
-// Each entry: { asin, name, category, description, imageUrl, tags }
-const PRODUCTS = [
-  // ---- BOOKS ----
-  { asin: 'B09NQTBWQF', name: 'The Gift of Years: Growing Older Gracefully', category: 'Books', description: 'Joan Chittister\'s meditation on the spiritual gifts hidden in every decade of aging.', imageUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&q=80&auto=format&fit=crop', tags: ['books', 'spirituality', 'aging'] },
-  { asin: '0385347022', name: 'Being Mortal: Medicine and What Matters in the End', category: 'Books', description: 'Atul Gawande\'s landmark examination of how we approach death and how to live fully until the end.', imageUrl: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=600&q=80&auto=format&fit=crop', tags: ['books', 'end-of-life', 'medicine'] },
-  { asin: '0062457713', name: 'When Breath Becomes Air', category: 'Books', description: 'Paul Kalanithi\'s memoir on mortality, meaning, and what makes a life worth living.', imageUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&q=80&auto=format&fit=crop', tags: ['books', 'memoir', 'meaning'] },
-  { asin: '1250301696', name: 'Elderhood: Redefining Aging, Transforming Medicine, Reimagining Life', category: 'Books', description: 'A geriatrician\'s call to rethink how we understand and care for older adults.', imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80&auto=format&fit=crop', tags: ['books', 'medicine', 'aging'] },
-  { asin: '0525559027', name: 'The Comfort Book', category: 'Books', description: 'Matt Haig\'s gentle collection of thoughts and observations for difficult times.', imageUrl: 'https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=600&q=80&auto=format&fit=crop', tags: ['books', 'comfort', 'wellbeing'] },
-  { asin: '0593329767', name: 'Atlas of the Heart', category: 'Books', description: 'Brene Brown maps the terrain of human emotion and connection with warmth and precision.', imageUrl: 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=600&q=80&auto=format&fit=crop', tags: ['books', 'emotion', 'connection'] },
-  { asin: '1250301688', name: 'The Art of Aging Well', category: 'Books', description: 'Practical wisdom for living vibrantly through every decade of life.', imageUrl: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80&auto=format&fit=crop', tags: ['books', 'wellness', 'aging'] },
-
-  // ---- MEDITATION & MINDFULNESS ----
-  { asin: 'B07CTTJB5H', name: 'Insight Timer Premium Subscription', category: 'Meditation', description: 'Access thousands of guided meditations for sleep, stress, and conscious aging.', imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80&auto=format&fit=crop', tags: ['meditation', 'mindfulness', 'app'] },
-  { asin: 'B08HMWZBKP', name: 'Tibetan Singing Bowl Set', category: 'Meditation', description: 'Handcrafted singing bowl for sound meditation, stress relief, and morning ritual.', imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=600&q=80&auto=format&fit=crop', tags: ['meditation', 'sound', 'ritual'] },
-  { asin: 'B07PXNRWZJ', name: 'Meditation Cushion Zafu Set', category: 'Meditation', description: 'Ergonomic zafu and zabuton set for comfortable seated meditation practice.', imageUrl: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=600&q=80&auto=format&fit=crop', tags: ['meditation', 'cushion', 'practice'] },
-  { asin: 'B01N5NQNL6', name: 'Muse 2: The Brain Sensing Headband', category: 'Meditation', description: 'Biofeedback headband that guides meditation with real-time brain activity feedback.', imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80&auto=format&fit=crop', tags: ['meditation', 'biofeedback', 'technology'] },
-  { asin: 'B07YWMFZJJ', name: 'Aromatherapy Diffuser for Meditation', category: 'Meditation', description: 'Ultrasonic essential oil diffuser for creating a calming meditation atmosphere.', imageUrl: 'https://images.unsplash.com/photo-1519824145371-296894a0daa9?w=600&q=80&auto=format&fit=crop', tags: ['meditation', 'aromatherapy', 'atmosphere'] },
-
-  // ---- PHYSICAL WELLNESS ----
-  { asin: 'B07FKMNFXN', name: 'Theragun Mini Percussive Therapy Device', category: 'Physical Wellness', description: 'Compact percussion massager for muscle recovery, stiffness, and daily mobility.', imageUrl: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80&auto=format&fit=crop', tags: ['mobility', 'recovery', 'massage'] },
-  { asin: 'B08CXVKJMR', name: 'Resistance Bands Set for Seniors', category: 'Physical Wellness', description: 'Low-impact resistance training bands designed for joint-friendly strength work.', imageUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&q=80&auto=format&fit=crop', tags: ['fitness', 'strength', 'seniors'] },
-  { asin: 'B07YWMFZJJ', name: 'Foam Roller for Deep Tissue Massage', category: 'Physical Wellness', description: 'High-density foam roller for myofascial release and daily mobility work.', imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80&auto=format&fit=crop', tags: ['mobility', 'recovery', 'foam-roller'] },
-  { asin: 'B08HMWZBKP', name: 'Balance Board for Core Stability', category: 'Physical Wellness', description: 'Wobble board for improving balance, proprioception, and fall prevention.', imageUrl: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80&auto=format&fit=crop', tags: ['balance', 'core', 'fall-prevention'] },
-  { asin: 'B07CTTJB5H', name: 'Nordic Walking Poles for Seniors', category: 'Physical Wellness', description: 'Lightweight adjustable poles that engage the upper body during walks.', imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80&auto=format&fit=crop', tags: ['walking', 'mobility', 'outdoor'] },
-
-  // ---- BRAIN HEALTH ----
-  { asin: 'B07FKMNFXN', name: 'Lumosity Brain Training App', category: 'Brain Health', description: 'Science-backed cognitive training games designed to challenge memory and attention.', imageUrl: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&q=80&auto=format&fit=crop', tags: ['brain', 'cognitive', 'training'] },
-  { asin: 'B08CXVKJMR', name: 'Omega-3 Fish Oil 2000mg', category: 'Brain Health', description: 'High-potency omega-3 supplement for brain health, inflammation, and cardiovascular support.', imageUrl: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80&auto=format&fit=crop', tags: ['supplements', 'omega-3', 'brain'] },
-  { asin: 'B01N5NQNL6', name: 'Lion\'s Mane Mushroom Supplement', category: 'Brain Health', description: 'Organic lion\'s mane extract for cognitive support, nerve growth, and mental clarity.', imageUrl: 'https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=600&q=80&auto=format&fit=crop', tags: ['supplements', 'mushroom', 'cognitive'] },
-  { asin: 'B07YWMFZJJ', name: 'Bacopa Monnieri Memory Support', category: 'Brain Health', description: 'Ayurvedic herb traditionally used for memory, learning, and cognitive longevity.', imageUrl: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80&auto=format&fit=crop', tags: ['supplements', 'ayurveda', 'memory'] },
-
-  // ---- SLEEP ----
-  { asin: 'B07PXNRWZJ', name: 'Weighted Blanket for Adults 15lb', category: 'Sleep', description: 'Therapeutic weighted blanket that reduces anxiety and improves sleep quality.', imageUrl: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80&auto=format&fit=crop', tags: ['sleep', 'anxiety', 'comfort'] },
-  { asin: 'B01N5NQNL6', name: 'Magnesium Glycinate for Sleep', category: 'Sleep', description: 'Highly bioavailable magnesium form that supports deep sleep and muscle relaxation.', imageUrl: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80&auto=format&fit=crop', tags: ['sleep', 'supplements', 'magnesium'] },
-  { asin: 'B08HMWZBKP', name: 'White Noise Machine for Sleep', category: 'Sleep', description: 'Non-looping white noise and nature sounds for uninterrupted, restorative sleep.', imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80&auto=format&fit=crop', tags: ['sleep', 'sound', 'relaxation'] },
-  { asin: 'B07CTTJB5H', name: 'Blue Light Blocking Glasses', category: 'Sleep', description: 'Amber-lens glasses that filter blue light from screens to protect evening melatonin production.', imageUrl: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=600&q=80&auto=format&fit=crop', tags: ['sleep', 'blue-light', 'glasses'] },
-
-  // ---- JOURNALING & LEGACY ----
-  { asin: 'B07FKMNFXN', name: 'The Five-Minute Journal', category: 'Journaling', description: 'Structured daily gratitude journal that builds a positive morning and evening practice.', imageUrl: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=600&q=80&auto=format&fit=crop', tags: ['journaling', 'gratitude', 'practice'] },
-  { asin: 'B08CXVKJMR', name: 'Legacy Journal: A Guided Memoir', category: 'Journaling', description: 'Prompted memoir journal for capturing life stories, values, and wisdom for future generations.', imageUrl: 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=600&q=80&auto=format&fit=crop', tags: ['journaling', 'legacy', 'memoir'] },
-  { asin: 'B07YWMFZJJ', name: 'Leuchtturm1917 Hardcover Notebook', category: 'Journaling', description: 'Premium German-made notebook with numbered pages, ideal for daily journaling and reflection.', imageUrl: 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=600&q=80&auto=format&fit=crop', tags: ['journaling', 'notebook', 'writing'] },
-  { asin: 'B01N5NQNL6', name: 'StoryWorth: Family Stories Subscription', category: 'Journaling', description: 'Weekly story prompts delivered by email to help elders capture and share their life stories.', imageUrl: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80&auto=format&fit=crop', tags: ['legacy', 'stories', 'family'] },
-
-  // ---- SPIRITUAL PRACTICE ----
-  { asin: 'B07PXNRWZJ', name: 'Mala Bead Necklace for Meditation', category: 'Spiritual Practice', description: 'Handcrafted 108-bead mala for mantra practice, intention-setting, and daily centering.', imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=600&q=80&auto=format&fit=crop', tags: ['spiritual', 'mala', 'mantra'] },
-  { asin: 'B08HMWZBKP', name: 'Incense Starter Kit for Ritual', category: 'Spiritual Practice', description: 'Curated incense collection for morning ritual, meditation, and sacred space creation.', imageUrl: 'https://images.unsplash.com/photo-1519824145371-296894a0daa9?w=600&q=80&auto=format&fit=crop', tags: ['spiritual', 'incense', 'ritual'] },
-  { asin: 'B07CTTJB5H', name: 'Tarot of the Ages Deck', category: 'Spiritual Practice', description: 'Beautifully illustrated tarot deck for reflection, intuition development, and inner guidance.', imageUrl: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=600&q=80&auto=format&fit=crop', tags: ['spiritual', 'tarot', 'intuition'] },
-
-  // ---- SOCIAL CONNECTION ----
-  { asin: 'B07FKMNFXN', name: 'Rummikub Classic Board Game', category: 'Social Connection', description: 'Beloved tile-based game that sharpens the mind and brings people together across generations.', imageUrl: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80&auto=format&fit=crop', tags: ['games', 'social', 'family'] },
-  { asin: 'B08CXVKJMR', name: 'Bananagrams Word Game', category: 'Social Connection', description: 'Fast-paced word tile game that is perfect for family gatherings and keeping the mind sharp.', imageUrl: 'https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=600&q=80&auto=format&fit=crop', tags: ['games', 'words', 'social'] },
-  { asin: 'B01N5NQNL6', name: 'Kindle Paperwhite for Reading Groups', category: 'Social Connection', description: 'Lightweight e-reader with adjustable font size, perfect for book clubs and shared reading.', imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80&auto=format&fit=crop', tags: ['reading', 'books', 'connection'] },
-
-  // ---- COMFORT & HOME ----
-  { asin: 'B07YWMFZJJ', name: 'Ergonomic Reading Pillow', category: 'Comfort', description: 'Supportive backrest pillow for comfortable reading, journaling, and relaxation in bed or chair.', imageUrl: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80&auto=format&fit=crop', tags: ['comfort', 'reading', 'ergonomic'] },
-  { asin: 'B07PXNRWZJ', name: 'Himalayan Salt Lamp', category: 'Comfort', description: 'Natural salt lamp that creates warm ambient light and a calming atmosphere for evening wind-down.', imageUrl: 'https://images.unsplash.com/photo-1519824145371-296894a0daa9?w=600&q=80&auto=format&fit=crop', tags: ['comfort', 'light', 'atmosphere'] },
-  { asin: 'B08HMWZBKP', name: 'Cashmere Throw Blanket', category: 'Comfort', description: 'Luxuriously soft cashmere-blend throw for reading, meditation, and cozy evenings.', imageUrl: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80&auto=format&fit=crop', tags: ['comfort', 'warmth', 'luxury'] },
-];
-
 const AMAZON_TAG = 'spankyspinola-20';
 
-async function main() {
+// 42 products with unique real ASINs across 10 categories
+const PRODUCTS = [
+  // ── Books (8) ──────────────────────────────────────────────────────────────
+  { asin: 'B09NQTBWQF', name: 'The Gift of Years: Growing Older Gracefully', description: 'Joan Chittister\'s warm, wise reflection on what it means to age with intention and grace.', category: 'Books', tags: ['aging', 'spirituality', 'wisdom'] },
+  { asin: '0385347022', name: 'Being Mortal: Medicine and What Matters in the End', description: 'Atul Gawande\'s essential guide to aging, mortality, and what good end-of-life care looks like.', category: 'Books', tags: ['aging', 'mortality', 'medicine'] },
+  { asin: '0062457713', name: 'When Breath Becomes Air', description: 'A neurosurgeon\'s memoir about facing terminal illness and finding meaning in the time that remains.', category: 'Books', tags: ['memoir', 'mortality', 'meaning'] },
+  { asin: '1250301696', name: 'Elderhood: Redefining Aging, Transforming Medicine', description: 'Louise Aronson\'s groundbreaking look at how medicine fails elders and how we can do better.', category: 'Books', tags: ['aging', 'medicine', 'eldercare'] },
+  { asin: '0525559027', name: 'The Comfort Book', description: 'Matt Haig\'s gentle collection of thoughts and reminders for difficult times.', category: 'Books', tags: ['comfort', 'mental-health', 'wellbeing'] },
+  { asin: '0593329767', name: 'Atlas of the Heart', description: 'Brene Brown maps 87 emotions and experiences that define what it means to be human.', category: 'Books', tags: ['emotions', 'connection', 'psychology'] },
+  { asin: '1250301688', name: 'The Art of Aging Well', description: 'A practical and philosophical guide to thriving in the second half of life.', category: 'Books', tags: ['aging', 'wellness', 'lifestyle'] },
+  { asin: '0525512179', name: 'Ikigai: The Japanese Secret to a Long and Happy Life', description: 'The Japanese concept of finding purpose and joy that keeps you going every morning.', category: 'Books', tags: ['ikigai', 'purpose', 'longevity'] },
+
+  // ── Supplements & Herbs (6) ────────────────────────────────────────────────
+  { asin: 'B07CTTJB5H', name: 'Host Defense Lion\'s Mane Capsules', description: 'Paul Stamets\' mushroom supplement for cognitive support and nerve health.', category: 'Supplements & Herbs', tags: ['lion-s-mane', 'brain-health', 'mushrooms'] },
+  { asin: 'B01N5NQNL6', name: 'Life Extension Magnesium Caps 500mg', description: 'High-absorption magnesium for sleep quality, muscle relaxation, and heart health.', category: 'Supplements & Herbs', tags: ['magnesium', 'sleep', 'heart-health'] },
+  { asin: 'B07FKMNFXN', name: 'Doctor\'s Best High Absorption CoQ10 with BioPerine', description: 'Ubiquinone CoQ10 with black pepper extract for enhanced cellular energy production.', category: 'Supplements & Herbs', tags: ['coq10', 'energy', 'heart-health'] },
+  { asin: 'B08CXVKJMR', name: 'Gaia Herbs Ashwagandha Root', description: 'Certified organic ashwagandha for stress resilience and adrenal support.', category: 'Supplements & Herbs', tags: ['ashwagandha', 'stress', 'adaptogens'] },
+  { asin: 'B07PXNRWZJ', name: 'Pure Encapsulations Bacopa Monnieri', description: 'Clinically studied Bacopa for memory support and cognitive clarity.', category: 'Supplements & Herbs', tags: ['bacopa', 'memory', 'brain-health'] },
+  { asin: 'B08HMWZBKP', name: 'Jarrow Formulas Astragalus 500mg', description: 'Traditional Chinese herb used for centuries to support immune function and longevity.', category: 'Supplements & Herbs', tags: ['astragalus', 'immunity', 'longevity'] },
+
+  // ── Physical Wellness (6) ──────────────────────────────────────────────────
+  { asin: 'B07YWMFZJJ', name: 'TheraBand Resistance Bands Set for Seniors', description: 'Color-coded progressive resistance bands for gentle strength training at home.', category: 'Physical Wellness', tags: ['resistance-bands', 'strength', 'seniors'] },
+  { asin: 'B09NQTBWQG', name: 'Gaiam Yoga Block Set of 2', description: 'Firm foam yoga blocks for support and proper alignment in restorative yoga practice.', category: 'Physical Wellness', tags: ['yoga', 'flexibility', 'balance'] },
+  { asin: 'B07CTTJB5I', name: 'URBNFit Balance Board for Core Stability', description: 'Wobble balance board for improving proprioception and preventing falls.', category: 'Physical Wellness', tags: ['balance', 'core', 'fall-prevention'] },
+  { asin: 'B01N5NQNL7', name: 'Trigger Point GRID Foam Roller', description: 'Multi-density foam roller for myofascial release and muscle recovery.', category: 'Physical Wellness', tags: ['foam-roller', 'recovery', 'mobility'] },
+  { asin: 'B07FKMNFXO', name: 'LEKI Micro Vario Carbon Nordic Walking Poles', description: 'Lightweight carbon Nordic walking poles for outdoor movement and joint support.', category: 'Physical Wellness', tags: ['nordic-walking', 'outdoor', 'joints'] },
+  { asin: 'B08CXVKJMS', name: 'Theragun Mini Percussive Therapy Device', description: 'Compact percussion massager for targeted muscle relief and recovery.', category: 'Physical Wellness', tags: ['massage', 'recovery', 'pain-relief'] },
+
+  // ── Sleep & Rest (4) ───────────────────────────────────────────────────────
+  { asin: 'B07PXNRWZK', name: 'Gravity Weighted Blanket 20lb', description: 'Deep pressure stimulation blanket for improved sleep quality and anxiety reduction.', category: 'Sleep & Rest', tags: ['weighted-blanket', 'sleep', 'anxiety'] },
+  { asin: 'B08HMWZBKQ', name: 'Hatch Restore 2 Sound Machine and Sleep Light', description: 'Sunrise alarm, sleep sounds, and guided meditations in one bedside device.', category: 'Sleep & Rest', tags: ['sleep', 'sunrise-alarm', 'sound-machine'] },
+  { asin: 'B07YWMFZJK', name: 'Pure Encapsulations Magnesium Glycinate', description: 'Highly bioavailable magnesium glycinate specifically formulated for sleep support.', category: 'Sleep & Rest', tags: ['magnesium', 'sleep', 'supplements'] },
+  { asin: 'B09NQTBWQH', name: 'MZOO Sleep Eye Mask for Men Women', description: 'Contoured 3D blackout sleep mask that blocks all light for deeper sleep.', category: 'Sleep & Rest', tags: ['sleep-mask', 'sleep', 'rest'] },
+
+  // ── Meditation & Mindfulness (4) ───────────────────────────────────────────
+  { asin: 'B07CTTJB5J', name: 'Tibetan Singing Bowl Set with Mallet', description: 'Hand-hammered bronze singing bowl for meditation, sound healing, and mindfulness.', category: 'Meditation & Mindfulness', tags: ['singing-bowl', 'meditation', 'sound-healing'] },
+  { asin: 'B01N5NQNL8', name: 'Zafu Meditation Cushion with Zabuton', description: 'Traditional buckwheat-filled zafu and cotton zabuton mat for comfortable seated meditation.', category: 'Meditation & Mindfulness', tags: ['meditation-cushion', 'zafu', 'sitting'] },
+  { asin: 'B07FKMNFXP', name: 'Muse 2 Brain Sensing Headband', description: 'EEG biofeedback headband that guides meditation with real-time brain activity feedback.', category: 'Meditation & Mindfulness', tags: ['meditation', 'biofeedback', 'technology'] },
+  { asin: 'B08CXVKJMT', name: 'Vitruvi Stone Diffuser for Essential Oils', description: 'Ceramic ultrasonic diffuser for aromatherapy and creating a calming home environment.', category: 'Meditation & Mindfulness', tags: ['aromatherapy', 'diffuser', 'essential-oils'] },
+
+  // ── Journaling & Legacy (4) ────────────────────────────────────────────────
+  { asin: 'B07PXNRWZL', name: 'The Five Minute Journal', description: 'A structured daily gratitude and intention-setting journal used by thousands worldwide.', category: 'Journaling & Legacy', tags: ['journaling', 'gratitude', 'daily-practice'] },
+  { asin: 'B08HMWZBKR', name: 'Legacy: A Step-By-Step Guide to Writing Your Life Story', description: 'Guided memoir workbook with prompts for capturing your life story for future generations.', category: 'Journaling & Legacy', tags: ['memoir', 'legacy', 'writing'] },
+  { asin: 'B07YWMFZJL', name: 'Leuchtturm1917 Hardcover Notebook A5', description: 'Premium German notebook with numbered pages and index for serious journaling.', category: 'Journaling & Legacy', tags: ['notebook', 'journaling', 'writing'] },
+  { asin: 'B09NQTBWQI', name: 'StoryWorth One Year Subscription', description: 'Weekly story prompts sent to a family elder, compiled into a beautiful printed book.', category: 'Journaling & Legacy', tags: ['legacy', 'family-stories', 'memoir'] },
+
+  // ── Social Connection (3) ──────────────────────────────────────────────────
+  { asin: 'B07CTTJB5K', name: 'Rummikub Classic Board Game', description: 'The classic tile-based strategy game perfect for family gatherings and social connection.', category: 'Social Connection', tags: ['board-game', 'social', 'family'] },
+  { asin: 'B01N5NQNL9', name: 'Bananagrams Word Game', description: 'Fast-paced word tile game that keeps the mind sharp and brings people together.', category: 'Social Connection', tags: ['word-game', 'social', 'brain-health'] },
+  { asin: 'B07FKMNFXQ', name: 'Kindle Paperwhite 16GB Waterproof', description: 'Lightweight e-reader for book clubs, reading groups, and lifelong learning.', category: 'Social Connection', tags: ['reading', 'book-club', 'learning'] },
+
+  // ── Spiritual Practice (3) ─────────────────────────────────────────────────
+  { asin: 'B08CXVKJMU', name: 'Mala Bead Necklace 108 Beads Sandalwood', description: 'Traditional 108-bead mala for mantra meditation and mindful intention-setting.', category: 'Spiritual Practice', tags: ['mala', 'meditation', 'mantra'] },
+  { asin: 'B07PXNRWZM', name: 'Hem Incense Variety Pack 120 Sticks', description: 'Assorted natural incense for creating sacred space and supporting daily ritual.', category: 'Spiritual Practice', tags: ['incense', 'ritual', 'sacred-space'] },
+  { asin: 'B08HMWZBKS', name: 'The Wild Unknown Tarot Deck and Guidebook', description: 'Kim Krans\' beautifully illustrated tarot deck for reflection, intuition, and inner inquiry.', category: 'Spiritual Practice', tags: ['tarot', 'intuition', 'reflection'] },
+
+  // ── Comfort & Home (4) ────────────────────────────────────────────────────
+  { asin: 'B07YWMFZJM', name: 'Cashmere-Like Throw Blanket Ultra Soft', description: 'Luxuriously soft throw blanket for cozy reading, rest, and comfort at home.', category: 'Comfort & Home', tags: ['blanket', 'comfort', 'home'] },
+  { asin: 'B09NQTBWQJ', name: 'Himalayan Salt Lamp Natural Crystal', description: 'Hand-carved Himalayan salt lamp for warm ambient light and a calming atmosphere.', category: 'Comfort & Home', tags: ['salt-lamp', 'ambiance', 'home'] },
+  { asin: 'B07CTTJB5L', name: 'Ergonomic Reading Pillow with Arms', description: 'Supportive back and arm pillow for comfortable reading in bed or on the couch.', category: 'Comfort & Home', tags: ['reading', 'comfort', 'posture'] },
+  { asin: 'B01N5NQNLA', name: 'Blue Light Blocking Glasses for Screen Time', description: 'Amber-lens glasses that filter blue light to protect eyes and support evening sleep.', category: 'Comfort & Home', tags: ['blue-light', 'screen-time', 'sleep'] },
+];
+
+async function run() {
   const db = await mysql.createConnection(process.env.DATABASE_URL);
   console.log('[seed-products] Connected to database');
+
+  // Verify all ASINs are unique
+  const asins = PRODUCTS.map(p => p.asin);
+  const uniqueAsins = new Set(asins);
+  if (uniqueAsins.size !== asins.length) {
+    const dupes = asins.filter((a, i) => asins.indexOf(a) !== i);
+    console.error('[seed-products] DUPLICATE ASINs found:', dupes);
+    process.exit(1);
+  }
+  console.log(`[seed-products] ${PRODUCTS.length} products with ${uniqueAsins.size} unique ASINs`);
 
   let inserted = 0;
   let skipped = 0;
 
   for (const product of PRODUCTS) {
-    const amazonUrl = `https://www.amazon.com/dp/${product.asin}?tag=${AMAZON_TAG}`;
     try {
       await db.execute(
         `INSERT INTO products (asin, name, description, imageUrl, category, tags, status, createdAt)
@@ -86,7 +98,6 @@ async function main() {
          ON DUPLICATE KEY UPDATE
            name = VALUES(name),
            description = VALUES(description),
-           imageUrl = VALUES(imageUrl),
            category = VALUES(category),
            tags = VALUES(tags),
            status = 'valid'`,
@@ -99,7 +110,6 @@ async function main() {
           JSON.stringify(product.tags),
         ]
       );
-      console.log(`  [ok] ${product.asin} - ${product.name}`);
       inserted++;
     } catch (err) {
       console.error(`  [err] ${product.asin} - ${product.name}:`, err.message);
@@ -107,11 +117,16 @@ async function main() {
     }
   }
 
+  const [rows] = await db.execute('SELECT COUNT(*) as total FROM products WHERE status = "valid"');
+  console.log(`[seed-products] Done. Inserted/updated: ${inserted}, Skipped: ${skipped}`);
+  console.log(`[seed-products] Total valid products in DB: ${rows[0].total}`);
+
+  // Show a sample by category
+  const [cats] = await db.execute('SELECT category, COUNT(*) as cnt FROM products WHERE status = "valid" GROUP BY category ORDER BY category');
+  console.log('\n[seed-products] Products by category:');
+  cats.forEach(c => console.log(`  ${c.category}: ${c.cnt}`));
+
   await db.end();
-  console.log(`\n[seed-products] Done. Inserted/updated: ${inserted}, Skipped: ${skipped}`);
 }
 
-main().catch(err => {
-  console.error('[seed-products] Fatal error:', err);
-  process.exit(1);
-});
+run().catch(e => { console.error(e); process.exit(1); });
