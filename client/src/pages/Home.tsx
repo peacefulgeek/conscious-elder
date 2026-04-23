@@ -103,8 +103,8 @@ export default function Home() {
               letterSpacing: '-0.01em',
             }}
           >
-            The second half of life<br />
-            is not a decline.
+            <span style={{ display: 'block' }}>The second half of life</span>
+            <span style={{ display: 'block' }}>is not a decline.</span>
           </h1>
           <p
             style={{

@@ -143,3 +143,10 @@
 - [x] Nav link added: Assessments in SiteNav
 - [x] Route registered in App.tsx
 - [x] Vitest tests for scoring engine (27 tests, all passing)
+
+## Fixes and Deployment
+- [ ] Hero title: split onto two lines ("The second half of life" / "is not a decline.")
+- [ ] Push to GitHub: peacefulgeek/conscious-elder via SSH
+
+- [ ] Push to peacefulgeek/conscious-elder on GitHub via SSH
+- [ ] Mobile responsiveness audit: SiteNav hamburger, hero text, article grid, quiz flow, results page, assessments hub, recommended, about, privacy
