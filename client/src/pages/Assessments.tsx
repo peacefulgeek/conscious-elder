@@ -76,7 +76,7 @@ export default function Assessments() {
       <main style={{ background: 'oklch(0.985 0.008 85)', padding: '4rem 2rem 6rem' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           {isLoading ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '2rem' }}>
+            <div className="ce-quiz-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '2rem' }}>
               {[...Array(6)].map((_, i) => (
                 <div key={i} style={{ borderRadius: '1rem', overflow: 'hidden', border: '1px solid oklch(0.88 0.015 80)', background: '#fff' }}>
                   <div style={{ width: '100%', paddingTop: '52%', background: 'oklch(0.94 0.01 80)' }} />
@@ -98,7 +98,7 @@ export default function Assessments() {
                 </p>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '2rem' }}>
+              <div className="ce-quiz-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '2rem' }}>
                 {(quizzes ?? []).map((quiz) => {
                   const accentColor = DOMAIN_COLORS[quiz.id] ?? 'oklch(0.62 0.12 65)';
                   const cardImage = DOMAIN_IMAGES[quiz.id] ?? quiz.heroImage;

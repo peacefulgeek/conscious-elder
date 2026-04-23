@@ -491,3 +491,133 @@
   .dot-nav { display: none; }
   .hero-scroll__content { padding-bottom: 3rem; }
 }
+
+/* ── Mobile Responsiveness: all pages ── */
+@media (max-width: 640px) {
+
+  /* ── Home: featured article two-column → single column ── */
+  .ce-featured-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .ce-featured-grid > div:first-child {
+    min-height: 260px !important;
+  }
+  .ce-featured-text {
+    padding: 1.5rem !important;
+  }
+  .ce-featured-text h2 {
+    font-size: 1.35rem !important;
+  }
+
+  /* ── Home / Articles: article card grid → single column ── */
+  .ce-article-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+
+  /* ── Home: section padding ── */
+  .ce-section {
+    padding: 3rem 1rem !important;
+  }
+
+  /* ── Home: footer grid → single column ── */
+  .ce-footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  /* ── Articles: filter pill row wraps ── */
+  .ce-filter-row {
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+  }
+
+  /* ── Recommended: product grid → single column ── */
+  .product-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+
+  /* ── About: two-column bio → single column ── */
+  .about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  .about-grid img {
+    max-width: 180px !important;
+    margin: 0 auto !important;
+  }
+  .about-topics-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Assessments hub: quiz card grid → single column ── */
+  .ce-quiz-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Quiz: question card padding ── */
+  .ce-quiz-card {
+    padding: 1.5rem 1rem !important;
+  }
+
+  /* ── Quiz results: recommendation grid → single column ── */
+  .ce-rec-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Article detail: hero title ── */
+  .ce-article-hero h1 {
+    font-size: clamp(1.5rem, 7vw, 2.5rem) !important;
+  }
+
+  /* ── General: reduce hero padding on mobile ── */
+  .ce-hero-content {
+    padding: 0 1rem 3rem !important;
+  }
+
+  /* ── General: full-width buttons ── */
+  .ce-btn-full-mobile {
+    width: 100% !important;
+    text-align: center !important;
+  }
+}
+
+/* ── Tablet: 641–1023px ── */
+@media (min-width: 641px) and (max-width: 1023px) {
+  .ce-article-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .ce-footer-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2rem !important;
+  }
+  .about-grid {
+    grid-template-columns: 180px 1fr !important;
+    gap: 2rem !important;
+  }
+}
+
+/* ── Quiz Likert scale: stays horizontal on all sizes ── */
+.ce-likert-row {
+  gap: 0.5rem !important;
+}
+.ce-likert-row button {
+  min-width: 0 !important;
+  max-width: none !important;
+  flex: 1 !important;
+}
+
+/* ── Article hero: reduce height on mobile ── */
+@media (max-width: 640px) {
+  .ce-article-hero {
+    height: 55vw !important;
+    min-height: 280px !important;
+  }
+  .ce-article-hero > div:last-child {
+    padding-bottom: 2rem !important;
+  }
+}

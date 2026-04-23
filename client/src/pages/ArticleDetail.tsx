@@ -99,6 +99,7 @@ export default function ArticleDetail() {
 
       {/* ── Full-viewport hero with title overlay ── */}
       <div
+        className="ce-article-hero"
         style={{
           position: 'relative',
           width: '100%',

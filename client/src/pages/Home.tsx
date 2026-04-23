@@ -165,10 +165,10 @@ export default function Home() {
       </section>
 
       {/* ── Main Content: warm cream background ── */}
-      <main style={{ background: 'oklch(0.985 0.008 85)', minHeight: '60vh' }}>
+      <main style={{ background: 'oklch(0.985 0.008 85)', minHeight: '60vh' }} className="ce-main">
 
         {/* ── Section: Latest Articles ── */}
-        <section style={{ maxWidth: '1200px', margin: '0 auto', padding: '5rem 2rem' }}>
+        <section style={{ maxWidth: '1200px', margin: '0 auto', padding: '5rem 2rem' }} className="ce-section">
 
           {/* Section header */}
           <div style={{ marginBottom: '3rem', borderBottom: '1px solid oklch(0.88 0.015 80)', paddingBottom: '1.5rem' }}>
@@ -233,6 +233,7 @@ export default function Home() {
                   style={{ textDecoration: 'none', display: 'block', marginBottom: '2rem' }}
                 >
                   <article
+                    className="ce-featured-grid"
                     style={{
                       display: 'grid',
                       gridTemplateColumns: '1fr 1fr',
@@ -262,7 +263,7 @@ export default function Home() {
                         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
                       />
                     </div>
-                    <div style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <div className="ce-featured-text" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                       <p style={{
                         fontFamily: 'var(--font-sans)',
                         fontSize: '0.7rem',
@@ -329,7 +330,7 @@ export default function Home() {
               )}
 
               {/* Two-column grid for remaining articles */}
-              <div style={{
+              <div className="ce-article-grid" style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(2, 1fr)',
                 gap: '2rem',
@@ -445,7 +446,7 @@ function SiteFooter() {
       padding: '4rem 2rem 2rem',
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{
+        <div className="ce-footer-grid" style={{
           display: 'grid',
           gridTemplateColumns: '2fr 1fr 1fr 1fr',
           gap: '3rem',

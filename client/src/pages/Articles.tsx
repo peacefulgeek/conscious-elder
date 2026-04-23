@@ -163,7 +163,7 @@ export default function Articles() {
               onBlur={e => (e.target.style.borderColor = 'oklch(0.88 0.015 80)')}
             />
           </div>
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          <div className="ce-filter-row" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             {CATEGORIES.map(cat => (
               <button
                 key={cat.value}
@@ -194,7 +194,7 @@ export default function Articles() {
       <main style={{ background: 'oklch(0.985 0.008 85)', padding: '3.5rem 2rem 5rem' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           {isLoading ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}>
+            <div className="ce-article-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}>
               {[...Array(6)].map((_, i) => (
                 <div key={i} style={{ borderRadius: '0.75rem', overflow: 'hidden', border: '1px solid oklch(0.88 0.015 80)', background: '#fff' }}>
                   <div style={{ width: '100%', paddingTop: '62%', background: 'oklch(0.94 0.01 80)' }} />
@@ -218,7 +218,7 @@ export default function Articles() {
                 {articles.length} article{articles.length !== 1 ? 's' : ''}
                 {category ? ` in ${CATEGORIES.find(c => c.value === category)?.label}` : ''}
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}>
+              <div className="ce-article-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}>
                 {articles.map(article => (
                   <ArticleCard key={article.id} {...article} />
                 ))}

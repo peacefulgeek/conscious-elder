@@ -167,7 +167,7 @@ export default function Quiz() {
         {/* Question card */}
         <main style={{ padding: '3rem 2rem 5rem' }}>
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-            <div style={{
+            <div className="ce-quiz-card" style={{
               background: '#fff',
               border: '1px solid oklch(0.88 0.015 80)',
               borderRadius: '1rem',
@@ -205,7 +205,7 @@ export default function Quiz() {
                     </div>
 
                     {/* 5 buttons */}
-                    <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+                    <div className="ce-likert-row" style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
                       {[1, 2, 3, 4, 5].map(value => {
                         const isSelected = selectedValue === value;
                         return (

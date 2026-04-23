@@ -93,7 +93,7 @@ export default function Recommended() {
           </div>
 
           {isLoading ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
+            <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
               {[...Array(9)].map((_, i) => (
                 <div key={i} style={{ borderRadius: '0.75rem', overflow: 'hidden', border: '1px solid oklch(0.88 0.015 80)', background: '#fff', padding: '1.5rem' }}>
                   <div style={{ height: '160px', background: 'oklch(0.94 0.01 80)', borderRadius: '0.5rem', marginBottom: '1rem' }} />
