@@ -176,3 +176,6 @@
 ## Products Table Seed
 - [x] scripts/seed-products.mjs: 38 products seeded with description and imageUrl
 - [x] Verify Tools We Recommend page shows real product cards (38 products, 10 categories)
+
+## SEO / Server Fixes
+- [ ] Server-side 301 redirect: www.consciouselder.com -> consciouselder.com
