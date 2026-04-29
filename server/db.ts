@@ -147,6 +147,44 @@ export async function getAllPublishedSlugs() {
   return db.select({ slug: articles.slug, updatedAt: articles.updatedAt }).from(articles).where(eq(articles.status, 'published'));
 }
 
+// ─── Queue helpers ──────────────────────────────────────────────
+
+export async function getPublishedArticleCount() {
+  const db = await getDb();
+  if (!db) return 0;
+  const result = await db.select({ count: sql<number>`count(*)` }).from(articles).where(eq(articles.status, 'published'));
+  return Number(result[0]?.count ?? 0);
+}
+
+export async function getQueuedArticleCount() {
+  const db = await getDb();
+  if (!db) return 0;
+  const result = await db.select({ count: sql<number>`count(*)` }).from(articles).where(eq(articles.status, 'queued'));
+  return Number(result[0]?.count ?? 0);
+}
+
+export async function getNextQueuedArticle() {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(articles)
+    .where(eq(articles.status, 'queued'))
+    .orderBy(articles.queuedAt)
+    .limit(1);
+  return result[0] ?? null;
+}
+
+export async function publishQueuedArticle(id: number, heroImageUrl: string) {
+  const db = await getDb();
+  if (!db) throw new Error('Database not available');
+  return db.update(articles).set({
+    status: 'published',
+    publishedAt: new Date(),
+    heroImageUrl,
+    imageUrl: heroImageUrl,
+    updatedAt: new Date(),
+  }).where(eq(articles.id, id));
+}
+
 // ─── Product helpers ──────────────────────────────────────────────
 
 export async function getValidProducts(limit = 200) {

@@ -179,3 +179,22 @@
 
 ## SEO / Server Fixes
 - [x] Server-side 301 redirect: www.consciouselder.com -> consciouselder.com
+
+## Addendum Migration (ADDENDUMSCOPENOCLAUDE)
+- [x] Remove @anthropic-ai/sdk, keep openai package
+- [x] Rewrite src/lib/anthropic-generate.mjs -> src/lib/deepseek-generate.mjs using OpenAI client + DeepSeek V4-Pro
+- [x] Set env vars: OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_MODEL, AUTO_GEN_ENABLED
+- [x] Delete any ANTHROPIC_API_KEY references from codebase and app.yaml
+- [x] Add status (queued/published), queued_at, published_at columns to articles table
+- [x] Update all public tRPC routes to filter status='published' only
+- [x] Update sitemap to filter status='published' only
+- [x] Build src/lib/bunny-image-library.mjs with assignHeroImage() using conscious-elder credentials
+- [x] Update generate-article.mjs cron to use assignHeroImage()
+- [x] Update product-spotlight.mjs to use assignHeroImage()
+- [x] Update Paul Voice Gate: full banned word/phrase list from addendum Section 6
+- [x] Update voice prompt: direct address, contractions, 2-3 dialogue markers
+- [x] Build scripts/bulk-seed.mjs with 500 unique conscious aging topics
+- [x] Update cron scheduler: Phase 1 (published<60, 5x/day) / Phase 2 (published>=60, 1x/weekday)
+- [x] Run TypeScript check, all tests passing
+- [x] Push to peacefulgeek/conscious-elder
+- [x] Save checkpoint

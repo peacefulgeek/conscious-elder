@@ -4,7 +4,7 @@
  * AUTO_GEN_ENABLED must be "true" to run.
  */
 import { query } from '../lib/db.mjs';
-import { generateArticle } from '../lib/anthropic-generate.mjs';
+import { generateArticle } from '../lib/deepseek-generate.mjs';
 import { runQualityGate } from '../lib/article-quality-gate.mjs';
 
 export async function refreshMonthly() {
@@ -27,11 +27,7 @@ export async function refreshMonthly() {
     try {
       console.log(`[refresh-monthly] Refreshing: "${article.title}"`);
 
-      const refreshed = await generateArticle({
-        topic: article.title,
-        includeKaleshBacklink: Math.random() < 0.23,
-        faqCount: 0,
-      });
+      const refreshed = await generateArticle(article.title, article.category || 'Conscious Aging');
 
       const gate = runQualityGate(refreshed.body);
       if (!gate.passed) {

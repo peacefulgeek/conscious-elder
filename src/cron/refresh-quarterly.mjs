@@ -4,7 +4,7 @@
  * AUTO_GEN_ENABLED must be "true" to run.
  */
 import { query } from '../lib/db.mjs';
-import { generateArticle } from '../lib/anthropic-generate.mjs';
+import { generateArticle } from '../lib/deepseek-generate.mjs';
 import { runQualityGate } from '../lib/article-quality-gate.mjs';
 import { verifyAsinBatch } from '../lib/amazon-verify.mjs';
 
@@ -37,16 +37,12 @@ export async function refreshQuarterly() {
           console.warn(`[refresh-quarterly] Dead ASINs in "${article.title}": ${deadAsins.join(', ')}`);
           // Mark dead ASINs in products table
           for (const asin of deadAsins) {
-            await query('UPDATE products SET status = "invalid", lastChecked = NOW() WHERE asin = ?', [asin]);
+            await query('UPDATE products SET isValid = 0, lastChecked = NOW() WHERE asin = ?', [asin]);
           }
         }
       }
 
-      const refreshed = await generateArticle({
-        topic: article.title,
-        includeKaleshBacklink: Math.random() < 0.23,
-        faqCount: Math.random() < 0.4 ? 3 : 0,
-      });
+      const refreshed = await generateArticle(article.title, article.category || 'Conscious Aging');
 
       const gate = runQualityGate(refreshed.body);
       if (!gate.passed) {

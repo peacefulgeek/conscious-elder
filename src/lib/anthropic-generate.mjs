@@ -1,3 +1,4 @@
+/** DEPRECATED: Replaced by deepseek-generate.mjs. Do not import. Kept for git history only. */
 /**
  * Anthropic article generation for The Conscious Elder.
  * Uses Claude claude-sonnet-4-5 for main generation.

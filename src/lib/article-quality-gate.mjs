@@ -1,6 +1,7 @@
 import { countAmazonLinks, extractAsinsFromText } from './amazon-verify.mjs';
 
 const AI_FLAGGED_WORDS = [
+  // Core AI tells
   'delve','tapestry','paradigm','synergy','leverage','unlock','empower',
   'utilize','pivotal','embark','underscore','paramount','seamlessly',
   'robust','beacon','foster','elevate','curate','curated','bespoke',
@@ -15,7 +16,20 @@ const AI_FLAGGED_WORDS = [
   'streamline','optimize','facilitate','amplify','catalyze',
   'propel','spearhead','orchestrate','navigate','traverse',
   'furthermore','moreover','additionally','consequently','subsequently',
-  'thereby','thusly','wherein','whereby'
+  'thereby','thusly','wherein','whereby',
+  // Addendum Section 6 additions
+  'testament','impactful','actionable','scalable','disruptive',
+  'visionary','trailblazing','pioneering','forward-thinking','future-proof',
+  'best-in-class','best practices','thought leader','thought leadership',
+  'value proposition','pain points','low-hanging fruit','move the needle',
+  'circle back','deep dive','bandwidth','synergize','ideate',
+  'incentivize','productize','socialize','learnings','takeaways'
+];
+
+// Banned names and AI tool references - must never appear in output
+const BANNED_NAMES = [
+  'paul wagner','shrikrishna','paulwagner.com','shrikrishna.com',
+  'manus','claude','anthropic','deepseek','chatgpt','openai'
 ];
 
 // 45+ phrases that signal AI writing
@@ -172,6 +186,11 @@ export function runQualityGate(articleBody) {
   // AI-flagged phrases - zero tolerance
   const bp = findFlaggedPhrases(articleBody);
   if (bp.length > 0) failures.push(`ai-flagged-phrases:${bp.join('|')}`);
+
+  // Banned names/AI references - zero tolerance
+  const bodyLower = articleBody.toLowerCase();
+  const foundNames = BANNED_NAMES.filter(n => bodyLower.includes(n.toLowerCase()));
+  if (foundNames.length > 0) failures.push(`banned-names:${foundNames.join(',')}`);
 
   // Voice signals - must have conversational fingerprint
   const voice = voiceSignals(articleBody);

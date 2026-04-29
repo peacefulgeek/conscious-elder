@@ -52,12 +52,13 @@ export const articles = mysqlTable("articles", {
   conclusionType: mysqlEnum("conclusionType", ["call-to-action", "reflection", "question", "challenge", "benediction"]),
   hasKaleshBacklink: boolean("hasKaleshBacklink").default(false),
   faqCount: int("faqCount").default(0),
-  status: mysqlEnum("status", ["draft", "published", "archived"]).default("published").notNull(),
+  status: mysqlEnum("status", ["draft", "queued", "published", "archived"]).default("published").notNull(),
+  queuedAt: timestamp("queuedAt"),
   lastRefreshed30d: timestamp("lastRefreshed30d"),
   lastRefreshed90d: timestamp("lastRefreshed90d"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  publishedAt: timestamp("publishedAt").defaultNow(),
+  publishedAt: timestamp("publishedAt"),
 });
 
 export type Article = typeof articles.$inferSelect;
