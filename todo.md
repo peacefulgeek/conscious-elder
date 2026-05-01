@@ -198,3 +198,8 @@
 - [x] Run TypeScript check, all tests passing
 - [x] Push to peacefulgeek/conscious-elder
 - [x] Save checkpoint
+
+## UI Polish
+- [x] Add OG image meta tag (static 1200x630 WebP on Bunny CDN)
+- [x] Improve top nav readability (contrast, font weight, spacing)
+- [x] Fix mobile responsiveness (hamburger menu, nav collapse on mobile)

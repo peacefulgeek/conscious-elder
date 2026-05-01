@@ -13,7 +13,7 @@ interface SeoHeadProps {
 
 const BASE_URL = 'https://consciouselder.com';
 const SITE_NAME = 'The Conscious Elder';
-const DEFAULT_OG_IMAGE = `${BASE_URL}/og-default.webp`;
+const DEFAULT_OG_IMAGE = 'https://conscious-elder.b-cdn.net/images/og-default.webp';
 
 export default function SeoHead({
   title,
