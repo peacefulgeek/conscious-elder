@@ -94,17 +94,15 @@ export default function Home() {
           <h1
             style={{
               fontFamily: 'var(--font-serif)',
-              fontSize: 'clamp(2rem, 4vw, 3.25rem)',
+              fontSize: 'clamp(1.5rem, 4.5vw, 3rem)',
               fontWeight: 700,
               color: '#fff',
-              lineHeight: 1.1,
+              lineHeight: 1.15,
               marginBottom: '1.25rem',
-              maxWidth: '560px',
               letterSpacing: '-0.01em',
             }}
           >
-            <span style={{ display: 'block' }}>The second half of life</span>
-            <span style={{ display: 'block' }}>is not a decline.</span>
+            The second half of life<br />is not a decline.
           </h1>
           <p
             style={{
