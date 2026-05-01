@@ -51,6 +51,14 @@ export const appRouter = router({
       .query(async ({ input }) => {
         return searchArticles(input.query, input.category, input.limit, input.offset);
       }),
+
+    related: publicProcedure
+      .input(z.object({ slug: z.string(), category: z.string().optional(), limit: z.number().min(1).max(6).default(3) }))
+      .query(async ({ input }) => {
+        const results = await searchArticles('', input.category, input.limit + 1, 0);
+        // Exclude the current article (searchArticles returns array directly)
+        return results.filter((a: { slug: string }) => a.slug !== input.slug).slice(0, input.limit);
+      }),
   }),
 
   products: router({

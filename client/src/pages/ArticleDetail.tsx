@@ -4,9 +4,51 @@ import SiteNav from '@/components/SiteNav';
 import ArticleRenderer from '@/components/ArticleRenderer';
 import SeoHead from '@/components/SeoHead';
 import { ArticleJsonLd } from '@/components/JsonLd';
+import ArticleCard from '@/components/ArticleCard';
 
 const KALESH_PHOTO = 'https://conscious-elder.b-cdn.net/images/kalesh-photo.webp';
 const KALESH_FALLBACK = 'https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=300&q=80&auto=format&fit=crop&crop=face';
+
+function RelatedArticles({ slug, category }: { slug: string; category?: string | null }) {
+  const { data: related, isLoading } = trpc.articles.related.useQuery(
+    { slug, category: category ?? undefined, limit: 3 },
+    { enabled: !!slug }
+  );
+  if (isLoading || !related || related.length === 0) return null;
+  return (
+    <section style={{ marginTop: '4rem', paddingTop: '3rem', borderTop: '2px solid oklch(0.88 0.015 80)' }}>
+      <h2 style={{
+        fontFamily: 'var(--font-serif)',
+        fontSize: 'clamp(1.25rem, 2.5vw, 1.6rem)',
+        fontWeight: 700,
+        color: 'oklch(0.22 0.02 240)',
+        marginBottom: '2rem',
+        letterSpacing: '-0.01em',
+      }}>
+        More on this topic
+      </h2>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+        gap: '1.5rem',
+      }}>
+        {related.map((a) => (
+          <ArticleCard
+            key={a.slug}
+            slug={a.slug}
+            title={a.title}
+            metaDescription={a.metaDescription}
+            category={a.category}
+            imageUrl={a.heroImageUrl ?? a.imageUrl}
+            imageAlt={a.imageAlt}
+            readingTime={a.readingTime}
+            publishedAt={a.publishedAt}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
 
 export default function ArticleDetail() {
   const params = useParams<{ slug: string }>();
@@ -274,6 +316,9 @@ export default function ArticleDetail() {
                 Tools We Recommend &rarr;
               </Link>
             </div>
+
+            {/* Related articles */}
+            <RelatedArticles slug={article.slug} category={article.category} />
           </div>
 
           {/* ── Right: sticky author sidebar ── */}

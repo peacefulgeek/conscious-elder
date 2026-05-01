@@ -6,8 +6,8 @@ import ArticleCard from '@/components/ArticleCard';
 import SeoHead from '@/components/SeoHead';
 import { WebsiteJsonLd } from '@/components/JsonLd';
 
-// Home page hero: person meditating in ancient forest with dramatic light rays - conscious aging, presence, wisdom
-const HERO_IMAGE = 'https://conscious-elder.b-cdn.net/images/hero-home.webp';
+// Home page hero: elderly couple walking into golden flower garden at sunset - warm, joyful, alive
+const HERO_IMAGE = 'https://conscious-elder.b-cdn.net/images/hero-home-v2.webp';
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
@@ -48,7 +48,7 @@ export default function Home() {
       >
         <img
           src={HERO_IMAGE}
-          alt="Sunlight through ancient forest trees - a metaphor for the wisdom of age"
+          alt="An elderly couple walking hand in hand through a golden flower garden at sunset"
           style={{
             position: 'absolute',
             inset: 0,
@@ -65,7 +65,7 @@ export default function Home() {
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.15) 35%, rgba(20,16,12,0.72) 75%, rgba(20,16,12,0.88) 100%)',
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.18) 35%, rgba(20,14,8,0.62) 75%, rgba(20,14,8,0.80) 100%)',
           }}
         />
         <div
