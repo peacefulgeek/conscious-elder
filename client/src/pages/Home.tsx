@@ -94,12 +94,12 @@ export default function Home() {
           <h1
             style={{
               fontFamily: 'var(--font-serif)',
-              fontSize: 'clamp(2.25rem, 5.5vw, 4rem)',
+              fontSize: 'clamp(2rem, 4vw, 3.25rem)',
               fontWeight: 700,
               color: '#fff',
               lineHeight: 1.1,
               marginBottom: '1.25rem',
-              maxWidth: '680px',
+              maxWidth: '560px',
               letterSpacing: '-0.01em',
             }}
           >
