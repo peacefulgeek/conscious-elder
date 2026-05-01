@@ -6,8 +6,8 @@ import ArticleCard from '@/components/ArticleCard';
 import SeoHead from '@/components/SeoHead';
 import { WebsiteJsonLd } from '@/components/JsonLd';
 
-// Home page hero: elder hands holding a cup of tea at dawn - warm, contemplative
-const HERO_IMAGE = 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=1920&q=90&auto=format&fit=crop';
+// Home page hero: person meditating in ancient forest with dramatic light rays - conscious aging, presence, wisdom
+const HERO_IMAGE = 'https://conscious-elder.b-cdn.net/images/hero-home.webp';
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
