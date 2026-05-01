@@ -5,6 +5,9 @@ import ArticleRenderer from '@/components/ArticleRenderer';
 import SeoHead from '@/components/SeoHead';
 import { ArticleJsonLd } from '@/components/JsonLd';
 
+const KALESH_PHOTO = 'https://conscious-elder.b-cdn.net/images/kalesh-photo.webp';
+const KALESH_FALLBACK = 'https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=300&q=80&auto=format&fit=crop&crop=face';
+
 export default function ArticleDetail() {
   const params = useParams<{ slug: string }>();
   const slug = params.slug;
@@ -20,13 +23,15 @@ export default function ArticleDetail() {
         <SiteNav alwaysSolid />
         <div style={{ paddingTop: '72px' }}>
           <div style={{ width: '100%', height: '60vh', background: 'oklch(0.92 0.01 80)' }} />
-          <div style={{ maxWidth: '720px', margin: '0 auto', padding: '3rem 1.5rem' }}>
-            <div style={{ height: '12px', background: 'oklch(0.92 0.01 80)', borderRadius: '4px', marginBottom: '1.5rem', width: '20%' }} />
-            <div style={{ height: '2.5rem', background: 'oklch(0.92 0.01 80)', borderRadius: '4px', marginBottom: '0.75rem', width: '90%' }} />
-            <div style={{ height: '2.5rem', background: 'oklch(0.92 0.01 80)', borderRadius: '4px', marginBottom: '1.5rem', width: '70%' }} />
-            {[...Array(4)].map((_, i) => (
-              <div key={i} style={{ height: '14px', background: 'oklch(0.92 0.01 80)', borderRadius: '4px', marginBottom: '0.5rem', width: i % 3 === 2 ? '80%' : '100%' }} />
-            ))}
+          <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '3rem 1.5rem', display: 'grid', gridTemplateColumns: '1fr 280px', gap: '3rem' }}>
+            <div>
+              <div style={{ height: '12px', background: 'oklch(0.92 0.01 80)', borderRadius: '4px', marginBottom: '1.5rem', width: '20%' }} />
+              <div style={{ height: '2.5rem', background: 'oklch(0.92 0.01 80)', borderRadius: '4px', marginBottom: '0.75rem', width: '90%' }} />
+              {[...Array(6)].map((_, i) => (
+                <div key={i} style={{ height: '14px', background: 'oklch(0.92 0.01 80)', borderRadius: '4px', marginBottom: '0.5rem', width: i % 3 === 2 ? '80%' : '100%' }} />
+              ))}
+            </div>
+            <div style={{ height: '320px', background: 'oklch(0.92 0.01 80)', borderRadius: '0.75rem' }} />
           </div>
         </div>
       </>
@@ -133,23 +138,20 @@ export default function ArticleDetail() {
           }} />
         )}
 
-        {/* Gradient: transparent top to warm dark bottom */}
         <div style={{
           position: 'absolute',
           inset: 0,
           background: 'linear-gradient(to bottom, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.15) 40%, rgba(18,14,10,0.85) 100%)',
         }} />
 
-        {/* Title block */}
         <div style={{
           position: 'relative',
           zIndex: 2,
           width: '100%',
-          maxWidth: '860px',
+          maxWidth: '1100px',
           margin: '0 auto',
           padding: '0 2rem 4rem',
         }}>
-          {/* Breadcrumb */}
           <nav style={{ marginBottom: '1rem' }}>
             <Link href="/articles" style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', textDecoration: 'none' }}>
               Articles
@@ -178,29 +180,19 @@ export default function ArticleDetail() {
             lineHeight: 1.12,
             marginBottom: '1.5rem',
             letterSpacing: '-0.015em',
+            maxWidth: '760px',
           }}>
             {article.title}
           </h1>
 
-          {/* Prominent byline */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            flexWrap: 'wrap',
-          }}>
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '50%',
-              background: 'oklch(0.62 0.12 65)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-            }}>
-              <span style={{ fontFamily: 'var(--font-serif)', fontSize: '0.875rem', fontWeight: 700, color: '#fff' }}>K</span>
-            </div>
+          {/* Byline in hero */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <img
+              src={KALESH_PHOTO}
+              alt="Kalesh"
+              onError={e => { (e.currentTarget as HTMLImageElement).src = KALESH_FALLBACK; }}
+              style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(255,255,255,0.3)', flexShrink: 0 }}
+            />
             <div>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.875rem', fontWeight: 700, color: '#fff', margin: 0 }}>
                 Kalesh
@@ -219,57 +211,217 @@ export default function ArticleDetail() {
         </div>
       </div>
 
-      {/* ── Article body ── */}
+      {/* ── Two-column article body ── */}
       <main style={{ background: 'oklch(0.985 0.008 85)' }}>
-        <div style={{ maxWidth: '720px', margin: '0 auto', padding: '3.5rem 1.5rem 5rem' }}>
-          {/* Lead paragraph / meta description */}
-          {article.metaDescription && (
-            <p style={{
-              fontFamily: 'var(--font-serif)',
-              fontSize: '1.2rem',
-              fontStyle: 'italic',
-              color: 'oklch(0.38 0.02 240)',
-              lineHeight: 1.7,
-              marginBottom: '2.5rem',
-              paddingBottom: '2.5rem',
-              borderBottom: '1px solid oklch(0.88 0.015 80)',
-            }}>
-              {article.metaDescription}
-            </p>
-          )}
+        <div
+          className="ce-article-columns"
+          style={{
+            maxWidth: '1100px',
+            margin: '0 auto',
+            padding: '3.5rem 2rem 5rem',
+            display: 'grid',
+            gridTemplateColumns: '1fr 280px',
+            gap: '4rem',
+            alignItems: 'start',
+          }}
+        >
+          {/* ── Left: article content ── */}
+          <div>
+            {article.metaDescription && (
+              <p style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '1.2rem',
+                fontStyle: 'italic',
+                color: 'oklch(0.38 0.02 240)',
+                lineHeight: 1.7,
+                marginBottom: '2.5rem',
+                paddingBottom: '2.5rem',
+                borderBottom: '1px solid oklch(0.88 0.015 80)',
+              }}>
+                {article.metaDescription}
+              </p>
+            )}
 
-          <ArticleRenderer body={article.body} />
+            <ArticleRenderer body={article.body} />
 
-          {/* Navigation footer */}
-          <div style={{
-            marginTop: '4rem',
-            paddingTop: '2rem',
-            borderTop: '1px solid oklch(0.88 0.015 80)',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: '1rem',
-          }}>
-            <Link href="/articles" style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              color: 'oklch(0.62 0.12 65)',
-              textDecoration: 'none',
+            {/* Navigation footer */}
+            <div style={{
+              marginTop: '4rem',
+              paddingTop: '2rem',
+              borderTop: '1px solid oklch(0.88 0.015 80)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '1rem',
             }}>
-              &larr; Back to all articles
-            </Link>
-            <Link href="/recommended" style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              color: 'oklch(0.45 0.02 240)',
-              textDecoration: 'none',
-            }}>
-              Tools We Recommend &rarr;
-            </Link>
+              <Link href="/articles" style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '0.875rem',
+                fontWeight: 500,
+                color: 'oklch(0.62 0.12 65)',
+                textDecoration: 'none',
+              }}>
+                &larr; Back to all articles
+              </Link>
+              <Link href="/recommended" style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '0.875rem',
+                fontWeight: 500,
+                color: 'oklch(0.45 0.02 240)',
+                textDecoration: 'none',
+              }}>
+                Tools We Recommend &rarr;
+              </Link>
+            </div>
           </div>
+
+          {/* ── Right: sticky author sidebar ── */}
+          <aside
+            className="ce-author-sidebar"
+            style={{
+              position: 'sticky',
+              top: '88px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0',
+            }}
+          >
+            <div style={{
+              background: '#fff',
+              border: '1px solid oklch(0.90 0.012 80)',
+              borderRadius: '0.875rem',
+              padding: '1.75rem 1.5rem',
+              boxShadow: '0 2px 12px oklch(0.18 0.015 240 / 0.05)',
+              textAlign: 'center',
+            }}>
+              {/* Author photo */}
+              <img
+                src={KALESH_PHOTO}
+                alt="Kalesh"
+                onError={e => { (e.currentTarget as HTMLImageElement).src = KALESH_FALLBACK; }}
+                style={{
+                  width: '88px',
+                  height: '88px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  border: '3px solid oklch(0.90 0.012 80)',
+                  marginBottom: '1rem',
+                }}
+              />
+
+              {/* Name */}
+              <p style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '1.05rem',
+                fontWeight: 700,
+                color: 'oklch(0.18 0.015 240)',
+                marginBottom: '0.25rem',
+              }}>
+                Kalesh
+              </p>
+
+              {/* Role label */}
+              <p style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '0.72rem',
+                fontWeight: 600,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: 'oklch(0.62 0.12 65)',
+                marginBottom: '1rem',
+              }}>
+                Founding Voice
+              </p>
+
+              {/* Short bio */}
+              <p style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '0.85rem',
+                color: 'oklch(0.42 0.02 240)',
+                lineHeight: 1.65,
+                marginBottom: '1.5rem',
+                textAlign: 'left',
+              }}>
+                Writing about conscious aging, inner practice, and the second half of life. Not a doctor — someone living this, paying attention, and writing it down.
+              </p>
+
+              {/* Book a Session CTA */}
+              <a
+                href="https://kalesh.love"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  padding: '0.75rem 1rem',
+                  background: 'oklch(0.62 0.12 65)',
+                  color: '#fff',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '0.875rem',
+                  fontWeight: 600,
+                  borderRadius: '0.5rem',
+                  textDecoration: 'none',
+                  textAlign: 'center',
+                  letterSpacing: '0.01em',
+                  marginBottom: '0.75rem',
+                  transition: 'background 0.2s',
+                }}
+              >
+                Book a Session
+              </a>
+
+              {/* Secondary link */}
+              <a
+                href="https://kalesh.love"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '0.8rem',
+                  color: 'oklch(0.52 0.12 65)',
+                  textDecoration: 'none',
+                  borderBottom: '1px solid oklch(0.52 0.12 65 / 0.4)',
+                  paddingBottom: '1px',
+                }}
+              >
+                kalesh.love
+              </a>
+            </div>
+
+            {/* Article meta below card */}
+            {(formattedDate || article.readingTime) && (
+              <div style={{
+                marginTop: '1.25rem',
+                padding: '1rem 1.25rem',
+                background: 'oklch(0.97 0.006 85)',
+                border: '1px solid oklch(0.90 0.012 80)',
+                borderRadius: '0.75rem',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.5rem',
+              }}>
+                {formattedDate && (
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', color: 'oklch(0.55 0.02 240)' }}>Published</span>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', fontWeight: 500, color: 'oklch(0.30 0.02 240)' }}>{formattedDate}</span>
+                  </div>
+                )}
+                {article.readingTime && (
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', color: 'oklch(0.55 0.02 240)' }}>Reading time</span>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', fontWeight: 500, color: 'oklch(0.30 0.02 240)' }}>{article.readingTime} min</span>
+                  </div>
+                )}
+                {article.category && (
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', color: 'oklch(0.55 0.02 240)' }}>Category</span>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', fontWeight: 500, color: 'oklch(0.62 0.12 65)' }}>{categoryLabel}</span>
+                  </div>
+                )}
+              </div>
+            )}
+          </aside>
         </div>
       </main>
 
@@ -289,6 +441,29 @@ export default function ArticleDetail() {
           </div>
         </div>
       </footer>
+
+      {/* Responsive: collapse sidebar below 860px */}
+      <style>{`
+        @media (max-width: 860px) {
+          .ce-article-columns {
+            grid-template-columns: 1fr !important;
+          }
+          .ce-author-sidebar {
+            position: static !important;
+            order: -1;
+          }
+          .ce-author-sidebar > div:first-child {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-align: left;
+            gap: 1.25rem;
+          }
+          .ce-author-sidebar > div:first-child img {
+            flex-shrink: 0;
+          }
+        }
+      `}</style>
     </>
   );
 }

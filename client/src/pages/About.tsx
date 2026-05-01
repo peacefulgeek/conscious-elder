@@ -139,12 +139,20 @@ export default function About() {
             </h2>
 
             <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', gap: '3.5rem', alignItems: 'start' }} className="about-grid">
-              <div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
                 <img
                   src={KALESH_PHOTO}
                   alt="Kalesh, founding voice of The Conscious Elder"
                   onError={e => { (e.currentTarget as HTMLImageElement).src = KALESH_FALLBACK; }}
-                  style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', borderRadius: '0.75rem', boxShadow: '0 8px 32px rgba(30,34,40,0.12)' }}
+                  style={{
+                    width: '240px',
+                    height: '240px',
+                    objectFit: 'cover',
+                    borderRadius: '50%',
+                    border: '3px solid oklch(0.90 0.012 80)',
+                    boxShadow: '0 4px 20px rgba(30,34,40,0.12)',
+                    flexShrink: 0,
+                  }}
                 />
                 <div style={{ marginTop: '1.25rem' }}>
                   <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.1rem', fontWeight: 700, color: 'oklch(0.18 0.015 240)', marginBottom: '0.25rem' }}>Kalesh</p>
