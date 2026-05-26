@@ -7,8 +7,8 @@ import SeoHead from '@/components/SeoHead';
 import { WebsiteJsonLd } from '@/components/JsonLd';
 
 // Home page hero: elderly couple walking into golden flower garden at sunset - warm, joyful, alive
-// v3: cropped to 1920x675 (sharp, fixed-height banner)
-const HERO_IMAGE = 'https://conscious-elder.b-cdn.net/images/hero-home-v3.webp';
+// v4: elder couple holding hands, smiling, walking through flower garden at golden sunset (1920x640)
+const HERO_IMAGE = 'https://conscious-elder.b-cdn.net/images/hero-home-v4.webp';
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
