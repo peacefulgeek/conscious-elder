@@ -55,6 +55,18 @@ export interface ArticleCard {
   createdAt: string;
 }
 
+export interface HerbProduct {
+  id: string;
+  name: string;
+  brand: string;
+  asin: string;
+  category: string;
+  subcategory: string;
+  description: string;
+  tags: string[];
+  tradition: string;
+}
+
 export interface Product {
   id: number;
   asin: string;
@@ -74,6 +86,7 @@ export interface Product {
 
 let _articles: Article[] = [];
 let _products: Product[] = [];
+let _herbs: HerbProduct[] = [];
 let _lastFetch = 0;
 let _loading = false;
 
@@ -89,14 +102,16 @@ export async function loadStore(force = false): Promise<void> {
   if (_loading) return;
   _loading = true;
   try {
-    const [arts, prods] = await Promise.all([
+    const [arts, prods, herbs] = await Promise.all([
       fetchJson<Article[]>(`${CDN_BASE}/articles.json`),
       fetchJson<Product[]>(`${CDN_BASE}/products.json`),
+      fetchJson<HerbProduct[]>(`${CDN_BASE}/herbs.json`).catch(() => [] as HerbProduct[]),
     ]);
     _articles = arts;
     _products = prods;
+    _herbs = herbs;
     _lastFetch = Date.now();
-    console.log(`[BunnyStore] Loaded ${_articles.length} articles, ${_products.length} products`);
+    console.log(`[BunnyStore] Loaded ${_articles.length} articles, ${_products.length} products, ${_herbs.length} herbs`);
   } catch (err) {
     console.error('[BunnyStore] Failed to load data:', err);
     // Keep stale data if available
@@ -358,6 +373,43 @@ export async function markProductSpotlighted(asin: string): Promise<void> {
     _products[idx] = { ..._products[idx], lastSpotlightedAt: new Date().toISOString() };
     await saveProducts(_products);
   }
+}
+
+// ── Herb/Supplement helpers ─────────────────────────────────────────────────
+
+export async function getHerbs(opts?: {
+  category?: string;
+  tradition?: string;
+  search?: string;
+  limit?: number;
+  offset?: number;
+}): Promise<HerbProduct[]> {
+  await ensureLoaded();
+  let results = [..._herbs];
+  if (opts?.category && opts.category !== 'All') {
+    results = results.filter(h => h.category === opts.category);
+  }
+  if (opts?.tradition) {
+    results = results.filter(h => h.tradition === opts.tradition);
+  }
+  if (opts?.search) {
+    const q = opts.search.toLowerCase();
+    results = results.filter(h =>
+      h.name.toLowerCase().includes(q) ||
+      h.description.toLowerCase().includes(q) ||
+      h.brand.toLowerCase().includes(q) ||
+      h.tags.some(t => t.toLowerCase().includes(q))
+    );
+  }
+  const offset = opts?.offset ?? 0;
+  const limit = opts?.limit ?? 200;
+  return results.slice(offset, offset + limit);
+}
+
+export async function getHerbCategories(): Promise<string[]> {
+  await ensureLoaded();
+  const cats = new Set(_herbs.map(h => h.category));
+  return Array.from(cats).sort();
 }
 
 // ── Insert a brand-new article (from cron generation) ────────────────────────

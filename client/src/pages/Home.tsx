@@ -7,7 +7,8 @@ import SeoHead from '@/components/SeoHead';
 import { WebsiteJsonLd } from '@/components/JsonLd';
 
 // Home page hero: elderly couple walking into golden flower garden at sunset - warm, joyful, alive
-const HERO_IMAGE = 'https://conscious-elder.b-cdn.net/images/hero-home-v2.webp';
+// v3: cropped to 1920x675 (sharp, fixed-height banner)
+const HERO_IMAGE = 'https://conscious-elder.b-cdn.net/images/hero-home-v3.webp';
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
@@ -34,16 +35,17 @@ export default function Home() {
       <WebsiteJsonLd />
       <SiteNav />
 
-      {/* ── Full-Viewport Hero ── */}
+      {/* ── Hero Banner ── */}
       <section
         style={{
           position: 'relative',
           width: '100%',
-          height: '100vh',
-          minHeight: '600px',
+          height: '560px',
+          minHeight: '400px',
           overflow: 'hidden',
           display: 'flex',
-          alignItems: 'flex-end',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         <img
@@ -55,7 +57,7 @@ export default function Home() {
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            objectPosition: 'center 40%',
+            objectPosition: 'center 50%',
           }}
           loading="eager"
           decoding="async"
@@ -75,7 +77,11 @@ export default function Home() {
             width: '100%',
             maxWidth: '1200px',
             margin: '0 auto',
-            padding: '0 2rem 5rem',
+            padding: '0 2rem',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
           <p

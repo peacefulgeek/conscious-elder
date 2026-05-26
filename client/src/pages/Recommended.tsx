@@ -27,7 +27,10 @@ const CATEGORY_LABELS: Record<string, string> = {
 export default function Recommended() {
   const { data: products, isLoading } = trpc.products.recommended.useQuery();
 
-  const grouped = (products ?? []).reduce((acc, p) => {
+  // 'Supplements & Herbs' products have moved to the /herbs page
+  const filtered = (products ?? []).filter(p => p.category !== 'Supplements & Herbs');
+
+  const grouped = filtered.reduce((acc, p) => {
     const cat = p.category || 'supplements';
     if (!acc[cat]) acc[cat] = [];
     acc[cat].push(p);

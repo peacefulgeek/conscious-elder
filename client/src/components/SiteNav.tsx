@@ -34,6 +34,7 @@ export default function SiteNav({ alwaysSolid = false }: SiteNavProps) {
     { href: '/articles', label: 'Articles' },
     { href: '/assessments', label: 'Assessments' },
     { href: '/recommended', label: 'Recommended' },
+    { href: '/herbs', label: 'Herbs & Supplements' },
     { href: '/about', label: 'About' },
   ];
 

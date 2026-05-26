@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Articles from "./pages/Articles";
 import ArticleDetail from "./pages/ArticleDetail";
 import Recommended from "./pages/Recommended";
+import Herbs from "./pages/Herbs";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Assessments from "./pages/Assessments";
@@ -22,6 +23,7 @@ function Router() {
       <Route path="/articles" component={Articles} />
       <Route path="/articles/:slug" component={ArticleDetail} />
       <Route path="/recommended" component={Recommended} />
+      <Route path="/herbs" component={Herbs} />
       <Route path="/about" component={About} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/assessments" component={Assessments} />

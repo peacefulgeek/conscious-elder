@@ -7,6 +7,7 @@ import {
   getPublishedArticles, getArticleBySlug, searchArticles,
   getArticleCount, getValidProducts, saveQuizResult, getQuizHistory, getLatestQuizResultByDomain
 } from "./db";
+import { getHerbs, getHerbCategories } from "./bunny-store";
 import { protectedProcedure } from "./_core/trpc";
 import { QUIZZES, QUIZ_MAP, scoreToTier } from "../shared/quizzes";
 
@@ -71,6 +72,26 @@ export const appRouter = router({
         const { limit = 40 } = input ?? {};
         return getValidProducts(limit);
       }),
+  }),
+
+  herbs: router({
+    list: publicProcedure
+      .input(z.object({
+        category: z.string().optional(),
+        tradition: z.string().optional(),
+        search: z.string().optional(),
+        limit: z.number().min(1).max(200).default(200),
+        offset: z.number().min(0).default(0),
+      }).optional())
+      .query(async ({ input }) => {
+        const { category, tradition, search, limit = 200, offset = 0 } = input ?? {};
+        const items = await getHerbs({ category, tradition, search, limit, offset });
+        return { items, total: items.length };
+      }),
+
+    categories: publicProcedure.query(async () => {
+      return getHerbCategories();
+    }),
   }),
 
   assessments: router({
