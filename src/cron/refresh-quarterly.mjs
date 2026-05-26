@@ -3,7 +3,7 @@
  * Deep refresh of articles older than 90 days.
  * AUTO_GEN_ENABLED must be "true" to run.
  */
-import { query } from '../lib/db.mjs';
+import { getArticlesForRefresh90d, updateArticleBody } from '../lib/db.mjs';
 import { generateArticle } from '../lib/deepseek-generate.mjs';
 import { runQualityGate } from '../lib/article-quality-gate.mjs';
 import { verifyAsinBatch } from '../lib/amazon-verify.mjs';

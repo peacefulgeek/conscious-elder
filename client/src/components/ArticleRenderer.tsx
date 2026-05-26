@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import AuthorBioCard from './AuthorBioCard';
 
 interface ArticleRendererProps {
-  body: string;
+  body: string | null;
 }
 
 const AMAZON_TAG = 'spankyspinola-20';
@@ -15,6 +15,7 @@ const AMAZON_TAG = 'spankyspinola-20';
  */
 export default function ArticleRenderer({ body }: ArticleRendererProps) {
   const { beforeBio, afterBio } = useMemo(() => {
+    if (!body) return { beforeBio: '', afterBio: null };
     const PLACEHOLDER = '[AUTHOR_BIO_PLACEHOLDER]';
     const idx = body.indexOf(PLACEHOLDER);
     if (idx === -1) {

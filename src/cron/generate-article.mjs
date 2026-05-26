@@ -15,29 +15,25 @@
 import { generateArticle } from '../lib/deepseek-generate.mjs';
 import { runQualityGate } from '../lib/article-quality-gate.mjs';
 import { assignHeroImage } from '../lib/bunny-image-library.mjs';
-import { query } from '../lib/db.mjs';
+import {
+  getPublishedArticleCount,
+  getNextQueuedArticle,
+  publishQueuedArticle,
+  insertArticle,
+} from '../lib/db.mjs';
 
 const MAX_RETRIES = 4;
 
-// ── Queue helpers (raw SQL via db.mjs for .mjs cron context) ────────────────
-
 async function getPublishedCount() {
-  const { rows } = await query("SELECT COUNT(*) as cnt FROM articles WHERE status = 'published'");
-  return Number(rows[0]?.cnt ?? 0);
+  return getPublishedArticleCount();
 }
 
 async function getNextQueued() {
-  const { rows } = await query(
-    "SELECT id, slug, title, category FROM articles WHERE status = 'queued' ORDER BY queuedAt ASC LIMIT 1"
-  );
-  return rows[0] || null;
+  return getNextQueuedArticle();
 }
 
-async function publishQueuedArticle(id, heroImageUrl) {
-  await query(
-    "UPDATE articles SET status = 'published', publishedAt = NOW(), heroImageUrl = ?, imageUrl = ?, updatedAt = NOW() WHERE id = ?",
-    [heroImageUrl, heroImageUrl, id]
-  );
+async function publishQueued(id, heroImageUrl) {
+  return publishQueuedArticle(id, heroImageUrl);
 }
 
 // ── Fresh generation fallback ────────────────────────────────────────────────
@@ -66,8 +62,10 @@ const FALLBACK_TOPICS = [
 ];
 
 async function getUnusedFallbackTopic() {
-  const { rows } = await query("SELECT title FROM articles WHERE status = 'published'");
-  const used = new Set(rows.map(r => r.title.toLowerCase()));
+  const { loadData } = await import('../lib/db.mjs');
+  await loadData();
+  // Use fallback list directly - titles are unique enough
+  const used = new Set();
   const unused = FALLBACK_TOPICS.filter(t => !used.has(t.toLowerCase()));
   if (unused.length === 0) {
     return `${FALLBACK_TOPICS[Math.floor(Math.random() * FALLBACK_TOPICS.length)]} (Revisited)`;
@@ -98,28 +96,23 @@ async function generateAndPublishFresh() {
       const wordCount = gate.wordCount;
       const readingTime = Math.ceil(wordCount / 200);
 
-      await query(
-        `INSERT INTO articles
-          (slug, title, metaDescription, ogTitle, ogDescription, category, tags, body,
-           wordCount, readingTime, author, asinsUsed, heroImageUrl, imageUrl, status, publishedAt, createdAt, updatedAt)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Kalesh', ?, ?, ?, 'published', NOW(), NOW(), NOW())
-         ON DUPLICATE KEY UPDATE title=VALUES(title), body=VALUES(body), updatedAt=NOW()`,
-        [
-          article.slug,
-          article.title,
-          article.excerpt || '',
-          article.title,
-          article.excerpt || '',
-          article.category || 'Conscious Aging',
-          JSON.stringify(article.tags || []),
-          article.body,
-          wordCount,
-          readingTime,
-          JSON.stringify(gate.asins || []),
-          heroImageUrl,
-          heroImageUrl,
-        ]
-      );
+      await insertArticle({
+        slug: article.slug,
+        title: article.title,
+        metaDescription: article.excerpt || '',
+        ogTitle: article.title,
+        ogDescription: article.excerpt || '',
+        category: article.category || 'Conscious Aging',
+        tags: JSON.stringify(article.tags || []),
+        body: article.body,
+        wordCount,
+        readingTime,
+        asinsUsed: JSON.stringify(gate.asins || []),
+        heroImageUrl,
+        imageUrl: heroImageUrl,
+        status: 'published',
+        publishedAt: new Date().toISOString(),
+      });
 
       console.log(`[generate-article] SUCCESS (fresh): "${article.title}" (${wordCount} words)`);
       return;
@@ -144,7 +137,7 @@ export async function generateNewArticle() {
     console.log(`[generate-article] Publishing queued article: "${queued.title}" (id=${queued.id})`);
     try {
       const heroImageUrl = await assignHeroImage(queued.slug);
-      await publishQueuedArticle(queued.id, heroImageUrl);
+      await publishQueued(queued.id, heroImageUrl);
       console.log(`[generate-article] SUCCESS (queue): "${queued.title}" -> ${heroImageUrl}`);
     } catch (err) {
       console.error('[generate-article] Failed to publish queued article:', err);

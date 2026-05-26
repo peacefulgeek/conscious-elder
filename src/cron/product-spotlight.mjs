@@ -6,7 +6,7 @@ import { generateArticle } from '../lib/deepseek-generate.mjs';
 import { assignHeroImage } from '../lib/bunny-image-library.mjs';
 import { runQualityGate } from '../lib/article-quality-gate.mjs';
 import { verifyAsin } from '../lib/amazon-verify.mjs';
-import { query } from '../lib/db.mjs';
+import { getProductsForSpotlight, markProductSpotlighted } from '../lib/db.mjs';
 
 const MAX_RETRIES = 4;
 

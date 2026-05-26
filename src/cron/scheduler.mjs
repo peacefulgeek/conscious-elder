@@ -17,7 +17,7 @@
  *   Job 5: ASIN health check      - Sunday 05:00 UTC
  */
 import cron from 'node-cron';
-import mysql from 'mysql2/promise';
+import { getPublishedArticleCount } from '../lib/db.mjs';
 import { generateNewArticle } from './generate-article.mjs';
 import { generateProductSpotlight } from './product-spotlight.mjs';
 import { refreshMonthly } from './refresh-monthly.mjs';
@@ -26,10 +26,7 @@ import { runAsinHealthCheck } from './asin-health-check.mjs';
 
 async function getPublishedCount() {
   try {
-    const conn = await mysql.createConnection(process.env.DATABASE_URL);
-    const [rows] = await conn.execute("SELECT COUNT(*) as cnt FROM articles WHERE status = 'published'");
-    await conn.end();
-    return Number(rows[0]?.cnt ?? 0);
+    return await getPublishedArticleCount();
   } catch {
     return 0;
   }

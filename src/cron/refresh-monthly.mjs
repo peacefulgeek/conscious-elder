@@ -3,7 +3,7 @@
  * Refreshes articles older than 30 days.
  * AUTO_GEN_ENABLED must be "true" to run.
  */
-import { query } from '../lib/db.mjs';
+import { getArticlesForRefresh30d, updateArticleBody } from '../lib/db.mjs';
 import { generateArticle } from '../lib/deepseek-generate.mjs';
 import { runQualityGate } from '../lib/article-quality-gate.mjs';
 

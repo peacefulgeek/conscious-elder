@@ -9,7 +9,7 @@ interface ArticleCardProps {
   imageAlt?: string | null;
   readingTime?: number | null;
   publishedAt?: Date | string | null;
-  author?: string;
+  author?: string | null;
 }
 
 export default function ArticleCard({

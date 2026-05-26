@@ -211,3 +211,15 @@
 - [x] Write RAILWAY_DEPLOY.md (all env vars, cron schedule, deploy steps)
 - [x] Production build verified (zero errors, TypeScript clean)
 - [x] Push to GitHub main branch
+
+## Bunny CDN JSON Migration (Remove All Database Dependencies)
+- [ ] Export all articles (published + queued) and products from TiDB to JSON
+- [ ] Upload articles.json and products.json to Bunny CDN (data/ folder)
+- [ ] Rewrite server/db.ts and tRPC procedures to read from Bunny CDN JSON
+- [ ] Rewrite sitemap route to read from Bunny CDN JSON
+- [ ] Rewrite cron jobs to read/write Bunny CDN JSON instead of database
+- [ ] Remove drizzle, mysql2, @tidbcloud/serverless from dependencies
+- [ ] Remove DATABASE_URL from all configs and docs
+- [ ] Update railway.json env vars (no DATABASE_URL)
+- [ ] Run build, verify zero errors
+- [ ] Push to GitHub, confirm live site shows articles

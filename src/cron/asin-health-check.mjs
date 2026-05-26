@@ -4,7 +4,7 @@
  * AUTO_GEN_ENABLED must be "true" to run.
  */
 import { verifyAsin } from '../lib/amazon-verify.mjs';
-import { query } from '../lib/db.mjs';
+import { getValidProducts, markProductInvalid, markProductValid } from '../lib/db.mjs';
 
 const DELAY_MS = 3000; // 3 seconds between checks to avoid throttling
 
