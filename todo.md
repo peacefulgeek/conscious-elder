@@ -203,3 +203,11 @@
 - [x] Add OG image meta tag (static 1200x630 WebP on Bunny CDN)
 - [x] Improve top nav readability (contrast, font weight, spacing)
 - [x] Fix mobile responsiveness (hamburger menu, nav collapse on mobile)
+
+## Railway Deployment
+- [x] Add railway.json (build/start/health check config)
+- [x] Add nixpacks.toml (Node 22, pnpm 10, build command)
+- [x] Add engines field to package.json (node >=22, pnpm >=10)
+- [x] Write RAILWAY_DEPLOY.md (all env vars, cron schedule, deploy steps)
+- [x] Production build verified (zero errors, TypeScript clean)
+- [x] Push to GitHub main branch
