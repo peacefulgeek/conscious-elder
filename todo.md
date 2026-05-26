@@ -225,10 +225,10 @@
 - [ ] Push to GitHub, confirm live site shows articles
 
 ## Herbs & Supplements Tab
-- [ ] Research and compile 200 real Amazon ASINs (Western herbs, TCM, Ayurvedic, supplements for 50+)
-- [ ] Verify ASINs are live on Amazon, build herbs.json, upload to Bunny CDN
-- [ ] Move existing herb/supplement products from Recommended page to Herbs & Supplements page
-- [ ] Add Herbs & Supplements page styled like Recommended
-- [ ] Add nav tab in SiteNav
-- [ ] Add tRPC/bunny-store procedure for herbs data
-- [ ] Push to GitHub and save checkpoint
+- [x] Research and compile 200 real Amazon ASINs (Western herbs, TCM, Ayurvedic, supplements for 50+)
+- [x] Verify ASINs are live on Amazon, build herbs.json, upload to Bunny CDN
+- [x] Move existing herb/supplement products from Recommended page to Herbs & Supplements page
+- [x] Add Herbs & Supplements page styled like Recommended
+- [x] Add nav tab in SiteNav
+- [x] Add tRPC/bunny-store procedure for herbs data
+- [x] Push to GitHub and save checkpoint
