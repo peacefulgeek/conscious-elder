@@ -6,9 +6,9 @@ import ArticleCard from '@/components/ArticleCard';
 import SeoHead from '@/components/SeoHead';
 import { WebsiteJsonLd } from '@/components/JsonLd';
 
-// Home page hero: elderly couple walking into golden flower garden at sunset - warm, joyful, alive
-// v4: elder couple holding hands, smiling, walking through flower garden at golden sunset (1920x640)
-const HERO_IMAGE = 'https://conscious-elder.b-cdn.net/images/hero-home-v4.webp';
+// Home page hero: elderly couple walking hand-in-hand through flower garden at golden sunset
+// v5: AI-generated 2560x1440 wide landscape, natural proportions, sharp, warm
+const HERO_IMAGE = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663309220512/KsDeiwC75px8XAj2beDQUv/hero-couple-v5-5mAQrVfCyosscMVJdPW2ub.webp';
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
