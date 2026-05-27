@@ -40,8 +40,8 @@ export default function Home() {
         style={{
           position: 'relative',
           width: '100%',
-          height: '560px',
-          minHeight: '400px',
+          height: '640px',
+          minHeight: '500px',
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
@@ -57,7 +57,7 @@ export default function Home() {
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            objectPosition: 'center 50%',
+            objectPosition: 'center 30%',
           }}
           loading="eager"
           decoding="async"
