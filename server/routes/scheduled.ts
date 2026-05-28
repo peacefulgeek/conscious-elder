@@ -113,48 +113,46 @@ Write the complete refreshed HTML body now. Start directly with the TL;DR sectio
 
 // ── Quarterly refresh handler ─────────────────────────────────────────────────
 
-scheduledRouter.post('/quarterly-refresh', async (req, res) => {
+scheduledRouter.post('/quarterly-refresh', async (_req, res) => {
   console.log('[quarterly-refresh] Triggered at', new Date().toISOString());
-  res.json({ ok: true, message: 'Quarterly refresh started' });
-
-  // Run async after response
-  setImmediate(async () => {
-    try {
-      const articles = await getArticlesForRefresh90d(20);
-      console.log(`[quarterly-refresh] Refreshing ${articles.length} articles`);
-      let success = 0;
-      for (const article of articles) {
-        const ok = await refreshArticleWithClaude(article as Parameters<typeof refreshArticleWithClaude>[0]);
-        if (ok) success++;
-        // Rate limit: 1 article per 15 seconds to avoid Claude rate limits
-        await new Promise(r => setTimeout(r, 15000));
-      }
-      console.log(`[quarterly-refresh] Done: ${success}/${articles.length} refreshed`);
-    } catch (err) {
-      console.error('[quarterly-refresh] Fatal error:', err);
+  try {
+    // Process 3 articles per cron trigger to stay within Cloud Run 180s request timeout
+    // Cron fires quarterly; 3 articles * ~15s each = ~45s, well within timeout
+    const articles = await getArticlesForRefresh90d(3);
+    console.log(`[quarterly-refresh] Refreshing ${articles.length} articles`);
+    let success = 0;
+    for (const article of articles) {
+      const ok = await refreshArticleWithClaude(article as Parameters<typeof refreshArticleWithClaude>[0]);
+      if (ok) success++;
+      // Brief pause between Claude calls
+      await new Promise(r => setTimeout(r, 2000));
     }
-  });
+    console.log(`[quarterly-refresh] Done: ${success}/${articles.length} refreshed`);
+    res.json({ ok: true, refreshed: success, total: articles.length });
+  } catch (err) {
+    console.error('[quarterly-refresh] Fatal error:', err);
+    res.status(500).json({ ok: false, error: String(err) });
+  }
 });
 
 // ── Monthly refresh handler ───────────────────────────────────────────────────
 
-scheduledRouter.post('/monthly-refresh', async (req, res) => {
+scheduledRouter.post('/monthly-refresh', async (_req, res) => {
   console.log('[monthly-refresh] Triggered at', new Date().toISOString());
-  res.json({ ok: true, message: 'Monthly refresh started' });
-
-  setImmediate(async () => {
-    try {
-      const articles = await getArticlesForRefresh30d(5);
-      console.log(`[monthly-refresh] Refreshing ${articles.length} articles`);
-      let success = 0;
-      for (const article of articles) {
-        const ok = await refreshArticleWithClaude(article as Parameters<typeof refreshArticleWithClaude>[0]);
-        if (ok) success++;
-        await new Promise(r => setTimeout(r, 15000));
-      }
-      console.log(`[monthly-refresh] Done: ${success}/${articles.length} refreshed`);
-    } catch (err) {
-      console.error('[monthly-refresh] Fatal error:', err);
+  try {
+    // Process 2 articles per cron trigger to stay within Cloud Run 180s request timeout
+    const articles = await getArticlesForRefresh30d(2);
+    console.log(`[monthly-refresh] Refreshing ${articles.length} articles`);
+    let success = 0;
+    for (const article of articles) {
+      const ok = await refreshArticleWithClaude(article as Parameters<typeof refreshArticleWithClaude>[0]);
+      if (ok) success++;
+      await new Promise(r => setTimeout(r, 2000));
     }
-  });
+    console.log(`[monthly-refresh] Done: ${success}/${articles.length} refreshed`);
+    res.json({ ok: true, refreshed: success, total: articles.length });
+  } catch (err) {
+    console.error('[monthly-refresh] Fatal error:', err);
+    res.status(500).json({ ok: false, error: String(err) });
+  }
 });
