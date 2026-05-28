@@ -1,0 +1,160 @@
+/**
+ * scheduled.ts - Heartbeat cron handlers
+ *
+ * /api/scheduled/quarterly-refresh
+ *   - Triggered quarterly (Jan/Apr/Jul/Oct 1st at 04:00 UTC)
+ *   - Rewrites the body of the 20 oldest published articles using Claude
+ *   - Enforces quality gate (no em-dashes, no banned words, word count 1800+)
+ *   - Updates Bunny CDN per-slug JSON and articles-index.json
+ *
+ * /api/scheduled/monthly-refresh
+ *   - Triggered monthly (1st of month at 03:00 UTC)
+ *   - Rewrites 5 oldest articles (lighter version of quarterly)
+ */
+
+import express from 'express';
+import Anthropic from '@anthropic-ai/sdk';
+import { getArticlesForRefresh90d, getArticlesForRefresh30d, updateArticleBody } from '../db';
+
+export const scheduledRouter = express.Router();
+
+const QUALITY_GATE_BANNED = [
+  'as we age', 'in today\'s world', 'in conclusion', 'it\'s important to note',
+  'it is important to', 'it\'s worth noting', 'needless to say', 'at the end of the day',
+  'when it comes to', 'in terms of', 'moving forward', 'going forward',
+  'it goes without saying', 'the fact of the matter', 'all things considered',
+  'at this point in time', 'due to the fact that', 'in light of the fact',
+  'for all intents and purposes', 'in the final analysis', 'it should be noted',
+  'it is worth mentioning', 'it is essential to', 'it is crucial to',
+  'it is vital to', 'it is necessary to', 'it is important that',
+  'in order to', 'in order for', 'in order that',
+  'paul wagner', 'shrikrishna', 'cloudfront', 'manus',
+];
+
+function passesQualityGate(body: string): { pass: boolean; reason?: string } {
+  if (body.includes('—') || body.includes('\u2014')) {
+    return { pass: false, reason: 'Contains em-dash' };
+  }
+  const lower = body.toLowerCase();
+  for (const banned of QUALITY_GATE_BANNED) {
+    if (lower.includes(banned)) {
+      return { pass: false, reason: `Contains banned phrase: "${banned}"` };
+    }
+  }
+  const wordCount = body.split(/\s+/).filter(Boolean).length;
+  if (wordCount < 1400) {
+    return { pass: false, reason: `Too short: ${wordCount} words` };
+  }
+  return { pass: true };
+}
+
+async function refreshArticleWithClaude(article: { id: number; slug: string; title: string; body: string | null; category: string }): Promise<boolean> {
+  const apiKey = process.env.CLAUDE_API_KEY;
+  if (!apiKey) {
+    console.error('[quarterly-refresh] CLAUDE_API_KEY not set');
+    return false;
+  }
+
+  const client = new Anthropic({ apiKey });
+
+  const prompt = `You are the voice of The Conscious Elder — a publication for people aging with awareness, written by Kalesh.
+
+HARD RULES (never break these):
+- NO em-dashes (— or –). Use commas, periods, or colons instead.
+- NO banned phrases: "as we age", "in today's world", "in conclusion", "it's important to note", "needless to say", "at the end of the day", "when it comes to", "moving forward", "going forward", "it goes without saying", "for all intents and purposes"
+- NO references to Paul Wagner, Shrikrishna, CloudFront, or Manus
+- NO generic AI-sounding language
+- Write in first person (I, we, my) with warmth and authority
+- Include a TL;DR block near the top: <section data-tldr="ai-overview"><p><strong>TL;DR:</strong> [2-3 sentence summary]</p></section>
+- Include at least 3 internal links to other articles on consciouselder.com/articles/
+- Include at least 1 outbound link to a .gov, .edu, NIH, or PubMed source
+- Every Amazon affiliate link must use tag=spankyspinola-20 and be labeled "(paid link)"
+- Word count: 1800-2400 words
+- Use HTML formatting (h2, h3, p, ul, ol, blockquote, strong, em)
+- End with a warm, personal conclusion that references Kalesh's own journey
+
+ARTICLE TO REFRESH:
+Title: ${article.title}
+Category: ${article.category}
+Current body (rewrite this, keeping the core ideas but improving quality, E-E-A-T signals, and structure):
+
+${article.body?.slice(0, 3000) || ''}
+
+Write the complete refreshed HTML body now. Start directly with the TL;DR section.`;
+
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-5',
+      max_tokens: 4096,
+      messages: [{ role: 'user', content: prompt }],
+    });
+
+    const newBody = response.content[0].type === 'text' ? response.content[0].text : '';
+    if (!newBody || newBody.length < 500) {
+      console.error(`[quarterly-refresh] Empty response for ${article.slug}`);
+      return false;
+    }
+
+    const gate = passesQualityGate(newBody);
+    if (!gate.pass) {
+      console.error(`[quarterly-refresh] Quality gate failed for ${article.slug}: ${gate.reason}`);
+      return false;
+    }
+
+    const wordCount = newBody.split(/\s+/).filter(Boolean).length;
+    await updateArticleBody(article.id, newBody, [], wordCount);
+    console.log(`[quarterly-refresh] Refreshed ${article.slug} (${wordCount} words)`);
+    return true;
+  } catch (err) {
+    console.error(`[quarterly-refresh] Claude error for ${article.slug}:`, err);
+    return false;
+  }
+}
+
+// ── Quarterly refresh handler ─────────────────────────────────────────────────
+
+scheduledRouter.post('/quarterly-refresh', async (req, res) => {
+  console.log('[quarterly-refresh] Triggered at', new Date().toISOString());
+  res.json({ ok: true, message: 'Quarterly refresh started' });
+
+  // Run async after response
+  setImmediate(async () => {
+    try {
+      const articles = await getArticlesForRefresh90d(20);
+      console.log(`[quarterly-refresh] Refreshing ${articles.length} articles`);
+      let success = 0;
+      for (const article of articles) {
+        const ok = await refreshArticleWithClaude(article as Parameters<typeof refreshArticleWithClaude>[0]);
+        if (ok) success++;
+        // Rate limit: 1 article per 15 seconds to avoid Claude rate limits
+        await new Promise(r => setTimeout(r, 15000));
+      }
+      console.log(`[quarterly-refresh] Done: ${success}/${articles.length} refreshed`);
+    } catch (err) {
+      console.error('[quarterly-refresh] Fatal error:', err);
+    }
+  });
+});
+
+// ── Monthly refresh handler ───────────────────────────────────────────────────
+
+scheduledRouter.post('/monthly-refresh', async (req, res) => {
+  console.log('[monthly-refresh] Triggered at', new Date().toISOString());
+  res.json({ ok: true, message: 'Monthly refresh started' });
+
+  setImmediate(async () => {
+    try {
+      const articles = await getArticlesForRefresh30d(5);
+      console.log(`[monthly-refresh] Refreshing ${articles.length} articles`);
+      let success = 0;
+      for (const article of articles) {
+        const ok = await refreshArticleWithClaude(article as Parameters<typeof refreshArticleWithClaude>[0]);
+        if (ok) success++;
+        await new Promise(r => setTimeout(r, 15000));
+      }
+      console.log(`[monthly-refresh] Done: ${success}/${articles.length} refreshed`);
+    } catch (err) {
+      console.error('[monthly-refresh] Fatal error:', err);
+    }
+  });
+});

@@ -1,6 +1,7 @@
 import { Link } from 'wouter';
 import SiteNav from '@/components/SiteNav';
 import SeoHead from '@/components/SeoHead';
+import { AboutPageJsonLd } from '@/components/JsonLd';
 
 const HERO_IMAGE = 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1600&q=85&auto=format&fit=crop&crop=center';
 const KALESH_PHOTO = 'https://conscious-elder.b-cdn.net/images/kalesh-photo.webp';
@@ -36,6 +37,7 @@ export default function About() {
         canonicalPath="/about"
         type="website"
       />
+      <AboutPageJsonLd />
       <SiteNav />
 
       {/* Hero */}

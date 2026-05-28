@@ -10,6 +10,7 @@ export {
   searchArticles,
   getArticleCount,
   getAllPublishedSlugs,
+  getAllPublishedArticlesForLlms,
   getPublishedArticleCount,
   getQueuedArticleCount,
   getNextQueuedArticle,

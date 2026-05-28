@@ -232,3 +232,35 @@
 - [x] Add nav tab in SiteNav
 - [x] Add tRPC/bunny-store procedure for herbs data
 - [x] Push to GitHub and save checkpoint
+
+## Final Pass (BacklinkWebsites-FinalPass.pdf)
+
+- [x] Store CLAUDE_API_KEY as secret and validate it works
+- [ ] Migrate articles from monolithic articles.json to per-article /articles/{slug}.json on Bunny CDN
+- [ ] Update bunny-store.ts to read/write per-article JSON files; keep metadata-only index
+- [ ] Wire Claude API (claude-sonnet-4-5) into article generation and refresh
+- [ ] Implement full quality gate: banned words, em-dash check, E-E-A-T signals
+- [ ] Add TL;DR block to all published articles (section data-tldr="ai-overview")
+- [ ] Add self-referencing language and bylines to all published articles
+- [ ] Fix robots.txt: add all AI crawlers, advertise sitemap and llms files
+- [ ] Add canonical UTM-stripping and robots meta on every public page
+- [ ] Add article:published_time, article:modified_time, article:author, article:section OG meta
+- [ ] Upgrade Article JSON-LD: wordCount, inLanguage, isAccessibleForFree, reviewedBy, SpeakableSpecification
+- [ ] Add BreadcrumbList JSON-LD per article
+- [ ] Add FAQPage JSON-LD auto-extracted from question headings
+- [ ] Add HowTo JSON-LD where article has ordered steps
+- [ ] Add WebSite JSON-LD with SearchAction on homepage
+- [ ] Add Organization JSON-LD sitewide
+- [ ] Add AboutPage + Organization JSON-LD on About page
+- [ ] Add CollectionPage + ItemList JSON-LD on articles hub page
+- [ ] Add Person JSON-LD for author
+- [ ] Update /sitemap.xml: newest first, ISO-8601 lastmod, published only
+- [ ] Add /llms.txt route: markdown index of all published articles by category
+- [ ] Add /llms-full.txt route: plain-text corpus of all article bodies
+- [ ] Ensure all head meta is SSR'd before React boots
+- [ ] Backdate published articles: randomize publishedAt across prior 3 months
+- [ ] Add quarterly refresh cron via Heartbeat CLI
+- [ ] Audit all bylines: warm credential line, datetime, warm self-referencing context
+- [ ] Verify no paulwagner.com leakage in any article, byline, schema, or page
+- [ ] Run validation: curl GPTBot UA, check sitemap 200, robots 200, llms.txt 200
+- [ ] Push clean to GitHub and save checkpoint

@@ -8,7 +8,7 @@ import { WebsiteJsonLd } from '@/components/JsonLd';
 
 // Home page hero: elderly couple walking hand-in-hand through flower garden at golden sunset
 // v5: AI-generated 2560x1440 wide landscape, natural proportions, sharp, warm
-const HERO_IMAGE = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663309220512/KsDeiwC75px8XAj2beDQUv/hero-couple-v5-5mAQrVfCyosscMVJdPW2ub.webp';
+const HERO_IMAGE = 'https://conscious-elder.b-cdn.net/images/hero-home.webp';
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);

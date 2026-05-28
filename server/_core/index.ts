@@ -11,6 +11,8 @@ import { serveStatic, setupVite } from "./vite";
 import { healthRouter } from '../routes/health';
 import { sitemapRouter } from '../routes/sitemap';
 import { robotsRouter } from '../routes/robots';
+import { llmsRouter } from '../routes/llms';
+import { scheduledRouter } from '../routes/scheduled';
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -54,9 +56,11 @@ async function startServer() {
   registerOAuthRoutes(app);
   // Health check - must be first
   app.use('/health', healthRouter);
-  // Sitemap and robots
+  // Sitemap, robots, and LLM discovery files
   app.use('/sitemap.xml', sitemapRouter);
   app.use('/robots.txt', robotsRouter);
+  app.use('/', llmsRouter);
+  app.use('/api/scheduled', scheduledRouter);
   // tRPC API
   app.use(
     "/api/trpc",

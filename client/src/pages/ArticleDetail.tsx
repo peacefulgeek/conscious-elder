@@ -131,6 +131,10 @@ export default function ArticleDetail() {
         ogImage={heroImage || undefined}
         canonicalPath={`/articles/${article.slug}`}
         type="article"
+        publishedAt={article.publishedAt}
+        updatedAt={article.updatedAt}
+        author="Kalesh"
+        category={article.category}
       />
       <ArticleJsonLd
         title={article.title}
@@ -140,6 +144,8 @@ export default function ArticleDetail() {
         updatedAt={article.updatedAt}
         imageUrl={heroImage}
         category={article.category}
+        wordCount={article.wordCount}
+        body={article.body}
       />
 
       <SiteNav />

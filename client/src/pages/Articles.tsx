@@ -4,6 +4,7 @@ import { trpc } from '@/lib/trpc';
 import SiteNav from '@/components/SiteNav';
 import ArticleCard from '@/components/ArticleCard';
 import SeoHead from '@/components/SeoHead';
+import { CollectionPageJsonLd } from '@/components/JsonLd';
 
 // Articles page hero: warm library with golden light
 const PAGE_HERO = 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=85&auto=format&fit=crop&crop=center';
@@ -46,6 +47,7 @@ export default function Articles() {
         canonicalPath="/articles"
         type="website"
       />
+      <CollectionPageJsonLd articles={articles.map(a => ({ slug: a.slug, title: a.title, description: a.metaDescription }))} />
       <SiteNav alwaysSolid />
 
       {/* ── Page Hero ── */}
