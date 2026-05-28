@@ -213,16 +213,15 @@
 - [x] Push to GitHub main branch
 
 ## Bunny CDN JSON Migration (Remove All Database Dependencies)
-- [ ] Export all articles (published + queued) and products from TiDB to JSON
-- [ ] Upload articles.json and products.json to Bunny CDN (data/ folder)
-- [ ] Rewrite server/db.ts and tRPC procedures to read from Bunny CDN JSON
-- [ ] Rewrite sitemap route to read from Bunny CDN JSON
-- [ ] Rewrite cron jobs to read/write Bunny CDN JSON instead of database
-- [ ] Remove drizzle, mysql2, @tidbcloud/serverless from dependencies
-- [ ] Remove DATABASE_URL from all configs and docs
-- [ ] Update railway.json env vars (no DATABASE_URL)
-- [ ] Run build, verify zero errors
-- [ ] Push to GitHub, confirm live site shows articles
+- [x] Export all articles (published + queued) and products from TiDB to JSON
+- [x] Upload articles.json and products.json to Bunny CDN (data/ folder)
+- [x] Rewrite server/db.ts and tRPC procedures to read from Bunny CDN JSON
+- [x] Rewrite sitemap route to read from Bunny CDN JSON
+- [x] Rewrite cron jobs to read/write Bunny CDN JSON instead of database
+- [x] Per-article /articles/{slug}.json files on Bunny CDN (Final Pass migration)
+- [x] Lightweight articles-index.json metadata-only index on Bunny CDN
+- [x] Run build, verify zero errors
+- [x] Push to GitHub, confirm live site shows articles
 
 ## Herbs & Supplements Tab
 - [x] Research and compile 200 real Amazon ASINs (Western herbs, TCM, Ayurvedic, supplements for 50+)
