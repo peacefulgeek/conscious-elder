@@ -7,7 +7,8 @@ import {
   getPublishedArticles, getArticleBySlug, searchArticles,
   getArticleCount, getValidProducts, saveQuizResult, getQuizHistory, getLatestQuizResultByDomain
 } from "./db";
-import { getHerbs, getHerbCategories } from "./bunny-store";
+import { getHerbs, getHerbCategories } from './bunny-store';
+import { notifyOwner } from './_core/notification';
 import { protectedProcedure } from "./_core/trpc";
 import { QUIZZES, QUIZ_MAP, scoreToTier } from "../shared/quizzes";
 
@@ -192,6 +193,67 @@ export const appRouter = router({
         return getLatestQuizResultByDomain(ctx.user.id, input.quizId);
       }),
   }),
+
+  newsletter: router({
+    subscribe: publicProcedure
+      .input(z.object({ email: z.string().email() }))
+      .mutation(async ({ input }) => {
+        const BUNNY_STORAGE = 'https://ny.storage.bunnycdn.com/conscious-elder';
+        const BUNNY_KEY = process.env.BUNNY_STORAGE_KEY || 'f6dbc11c-20dc-4c15-a39faabe3d28-a766-4a87';
+        const CDN_BASE = 'https://conscious-elder.b-cdn.net';
+
+        // Fetch existing subscribers (or start fresh)
+        let subscribers: Array<{ email: string; subscribedAt: string }> = [];
+        try {
+          const res = await fetch(`${CDN_BASE}/data/subscribers.json`, {
+            headers: { 'Cache-Control': 'no-cache' },
+          });
+          if (res.ok) {
+            subscribers = await res.json();
+          }
+        } catch {
+          // File doesn't exist yet — start with empty array
+        }
+
+        // Duplicate check
+        const alreadySubscribed = subscribers.some(
+          s => s.email.toLowerCase() === input.email.toLowerCase()
+        );
+        if (alreadySubscribed) {
+          return { success: true, alreadySubscribed: true };
+        }
+
+        // Append new subscriber
+        subscribers.push({ email: input.email, subscribedAt: new Date().toISOString() });
+
+        // Write back to Bunny CDN
+        const putRes = await fetch(`${BUNNY_STORAGE}/data/subscribers.json`, {
+          method: 'PUT',
+          headers: {
+            AccessKey: BUNNY_KEY,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(subscribers, null, 2),
+        });
+
+        if (!putRes.ok) {
+          throw new Error(`Failed to save subscriber: HTTP ${putRes.status}`);
+        }
+
+        // Notify owner
+        try {
+          await notifyOwner({
+            title: 'New newsletter subscriber',
+            content: `${input.email} just signed up for The Conscious Elder newsletter. Total subscribers: ${subscribers.length}`,
+          });
+        } catch {
+          // Non-fatal — don't fail the subscription if notification fails
+        }
+
+        return { success: true, alreadySubscribed: false };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
+

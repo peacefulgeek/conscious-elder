@@ -5,6 +5,7 @@ import SiteNav from '@/components/SiteNav';
 import ArticleCard from '@/components/ArticleCard';
 import SeoHead from '@/components/SeoHead';
 import { WebsiteJsonLd } from '@/components/JsonLd';
+import NewsletterSignup from '@/components/NewsletterSignup';
 
 // Home page hero: elderly couple walking hand-in-hand through flower garden at golden sunset
 // v5: AI-generated 2560x1440 wide landscape, natural proportions, sharp, warm
@@ -170,6 +171,9 @@ export default function Home() {
 
       {/* ── Main Content: warm cream background ── */}
       <main style={{ background: 'oklch(0.985 0.008 85)', minHeight: '60vh' }} className="ce-main">
+
+        {/* ── Newsletter Signup ── */}
+        <NewsletterSignup />
 
         {/* ── Section: Latest Articles ── */}
         <section style={{ maxWidth: '1200px', margin: '0 auto', padding: '5rem 2rem' }} className="ce-section">

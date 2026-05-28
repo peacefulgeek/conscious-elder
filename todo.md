@@ -261,3 +261,10 @@
 - [x] Add monthly refresh cron via Heartbeat CLI (task_uid: 3pYkERurvXtXNsT9rjewVB)
 - [x] Verify no paulwagner.com/cloudfront leakage in source code
 - [x] Push clean to GitHub (commit 0fb5298)
+
+## Newsletter Signup (Bunny CDN JSON storage)
+- [x] tRPC procedure: newsletter.subscribe (email + timestamp, appends to subscribers.json on Bunny CDN)
+- [x] Newsletter signup section on homepage (below hero, above article feed)
+- [x] Duplicate-check before appending (skip if email already in list)
+- [x] Owner notification on each new subscriber via notifyOwner()
+- [x] Push to GitHub and save checkpoint
