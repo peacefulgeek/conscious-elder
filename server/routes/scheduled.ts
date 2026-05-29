@@ -18,6 +18,64 @@ import { getArticlesForRefresh90d, getArticlesForRefresh30d, updateArticleBody }
 
 export const scheduledRouter = express.Router();
 
+const BUNNY_PULL_ZONE = 'https://conscious-elder.b-cdn.net';
+const BUNNY_STORAGE_ZONE = 'https://ny.storage.bunnycdn.com/conscious-elder';
+const BUNNY_KEY_IMG = process.env.BUNNY_STORAGE_KEY || 'f6dbc11c-20dc-4c15-a39faabe3d28-a766-4a87';
+
+/** Assign a hero image from the Bunny library (/library/lib-01..40.webp) */
+async function assignHeroImage(slug: string): Promise<string> {
+  const libNum = String(Math.floor(Math.random() * 40) + 1).padStart(2, '0');
+  const sourceFile = `lib-${libNum}.webp`;
+  try {
+    const downloadRes = await fetch(`${BUNNY_PULL_ZONE}/library/${sourceFile}`);
+    if (!downloadRes.ok) throw new Error(`Download failed: ${downloadRes.status}`);
+    const imageBuffer = await downloadRes.arrayBuffer();
+    const uploadRes = await fetch(`${BUNNY_STORAGE_ZONE}/images/${slug}.webp`, {
+      method: 'PUT',
+      headers: { AccessKey: BUNNY_KEY_IMG, 'Content-Type': 'image/webp' },
+      body: imageBuffer,
+    });
+    if (!uploadRes.ok) throw new Error(`Upload failed: ${uploadRes.status}`);
+    return `${BUNNY_PULL_ZONE}/images/${slug}.webp`;
+  } catch (err) {
+    // Fallback to direct library URL
+    console.warn(`[promote] Hero copy failed for "${slug}", using library fallback:`, (err as Error).message);
+    return `${BUNNY_PULL_ZONE}/library/${sourceFile}`;
+  }
+}
+
+// ── Promote: publish 1 queued article per trigger ────────────────────────────
+scheduledRouter.post('/promote-article', async (_req, res) => {
+  try {
+    const { getNextQueuedArticle, publishQueuedArticle, getQueuedArticleCount } = await import('../bunny-store');
+    const queuedCount = await getQueuedArticleCount();
+    if (queuedCount === 0) {
+      console.log('[promote] Queue empty — nothing to publish.');
+      return res.json({ success: true, published: false, reason: 'queue_empty' });
+    }
+    const article = await getNextQueuedArticle();
+    if (!article) {
+      return res.json({ success: true, published: false, reason: 'queue_empty' });
+    }
+    console.log(`[promote] Publishing queued article: "${article.title}" (id=${article.id})`);
+    const heroImageUrl = await assignHeroImage(article.slug);
+    await publishQueuedArticle(article.id, heroImageUrl);
+    console.log(`[promote] SUCCESS: "${article.title}" -> ${heroImageUrl}`);
+    return res.json({
+      success: true,
+      published: true,
+      slug: article.slug,
+      title: article.title,
+      heroImageUrl,
+      remainingInQueue: queuedCount - 1,
+    });
+  } catch (err) {
+    console.error('[promote] Error:', err);
+    return res.status(500).json({ success: false, error: (err as Error).message });
+  }
+});
+
+
 const QUALITY_GATE_BANNED = [
   'as we age', 'in today\'s world', 'in conclusion', 'it\'s important to note',
   'it is important to', 'it\'s worth noting', 'needless to say', 'at the end of the day',
