@@ -268,3 +268,12 @@
 - [x] Duplicate-check before appending (skip if email already in list)
 - [x] Owner notification on each new subscriber via notifyOwner()
 - [x] Push to GitHub and save checkpoint
+
+## Cron Cleanup & Pipeline Verification
+- [x] Confirm 466 queued articles stored as per-slug JSON on Bunny CDN (verified: ✓)
+- [x] Remove legacy src/cron/scheduler.mjs (5x/day burst Phase 1 cron) from codebase
+- [x] Remove src/cron/, src/lib/ legacy .mjs files from git (not in server build but dead code)
+- [x] Confirm only 2 active crons: weekday-promote-article, quarterly-article-refresh
+- [x] Delete monthly-refresh cron (redundant — quarterly covers it)
+- [x] Tested promote endpoint: published "The Chilly Truth: Cold Showers After 60" successfully
+- [x] Push to GitHub and save checkpoint

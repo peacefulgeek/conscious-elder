@@ -1,20 +1,22 @@
 /**
  * scheduled.ts - Heartbeat cron handlers
  *
- * /api/scheduled/quarterly-refresh
- *   - Triggered quarterly (Jan/Apr/Jul/Oct 1st at 04:00 UTC)
- *   - Rewrites the body of the 20 oldest published articles using Claude
- *   - Enforces quality gate (no em-dashes, no banned words, word count 1800+)
- *   - Updates Bunny CDN per-slug JSON and articles-index.json
+ * Active crons (registered via manus-heartbeat):
  *
- * /api/scheduled/monthly-refresh
- *   - Triggered monthly (1st of month at 03:00 UTC)
- *   - Rewrites 5 oldest articles (lighter version of quarterly)
+ * /api/scheduled/promote-article  [weekday-promote-article]
+ *   - Mon-Fri 09:00 UTC
+ *   - Picks oldest queued article, assigns hero image, stamps publishedAt
+ *   - Stops gracefully when queue is empty. No fallback generation.
+ *
+ * /api/scheduled/quarterly-refresh  [quarterly-article-refresh]
+ *   - Jan/Apr/Jul/Oct 1st at 04:00 UTC
+ *   - Rewrites 3 oldest published articles with Claude, enforces quality gate
+ *   - Updates Bunny CDN per-slug JSON and articles-index.json
  */
 
 import express from 'express';
 import Anthropic from '@anthropic-ai/sdk';
-import { getArticlesForRefresh90d, getArticlesForRefresh30d, updateArticleBody } from '../db';
+import { getArticlesForRefresh90d, updateArticleBody } from '../db';
 
 export const scheduledRouter = express.Router();
 
@@ -193,24 +195,4 @@ scheduledRouter.post('/quarterly-refresh', async (_req, res) => {
   }
 });
 
-// ── Monthly refresh handler ───────────────────────────────────────────────────
 
-scheduledRouter.post('/monthly-refresh', async (_req, res) => {
-  console.log('[monthly-refresh] Triggered at', new Date().toISOString());
-  try {
-    // Process 2 articles per cron trigger to stay within Cloud Run 180s request timeout
-    const articles = await getArticlesForRefresh30d(2);
-    console.log(`[monthly-refresh] Refreshing ${articles.length} articles`);
-    let success = 0;
-    for (const article of articles) {
-      const ok = await refreshArticleWithClaude(article as Parameters<typeof refreshArticleWithClaude>[0]);
-      if (ok) success++;
-      await new Promise(r => setTimeout(r, 2000));
-    }
-    console.log(`[monthly-refresh] Done: ${success}/${articles.length} refreshed`);
-    res.json({ ok: true, refreshed: success, total: articles.length });
-  } catch (err) {
-    console.error('[monthly-refresh] Fatal error:', err);
-    res.status(500).json({ ok: false, error: String(err) });
-  }
-});
