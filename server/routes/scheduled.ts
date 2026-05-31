@@ -122,7 +122,7 @@ async function refreshArticleWithClaude(article: { id: number; slug: string; tit
 HARD RULES (never break these):
 - NO em-dashes (— or –). Use commas, periods, or colons instead.
 - NO banned phrases: "as we age", "in today's world", "in conclusion", "it's important to note", "needless to say", "at the end of the day", "when it comes to", "moving forward", "going forward", "it goes without saying", "for all intents and purposes"
-- NO references to Paul Wagner, Shrikrishna, CloudFront, or Manus
+- NO references to our editorial team, Shrikrishna, CloudFront, or Manus
 - NO generic AI-sounding language
 - Write in first person (I, we, my) with warmth and authority
 - Include a TL;DR block near the top: <section data-tldr="ai-overview"><p><strong>TL;DR:</strong> [2-3 sentence summary]</p></section>

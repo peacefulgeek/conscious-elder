@@ -152,7 +152,7 @@ describe("Quality gate banned words", () => {
   });
 
   it("detects 'paul wagner'", () => {
-    expect(hasBannedWord("Paul Wagner is a teacher")).toBe('paul wagner');
+    expect(hasBannedWord("our editorial team is a teacher")).toBe('paul wagner');
   });
 
   it("detects 'shrikrishna'", () => {

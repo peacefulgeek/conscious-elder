@@ -1,0 +1,9 @@
+# conscious-elder
+
+> Content site
+
+## Content Format
+Long-form articles (1500-2500 words), evidence-based, with actionable takeaways.
+
+## Full Content
+Available at /llms-full.txt
