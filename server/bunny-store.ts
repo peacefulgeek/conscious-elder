@@ -491,7 +491,7 @@ export async function insertArticle(article: Omit<Article, 'id' | 'createdAt' | 
     body: article.body ?? null,
     wordCount: article.wordCount ?? null,
     readingTime: article.readingTime ?? null,
-    author: article.author ?? 'Kalesh',
+    author: article.author ?? 'The Editorial Team',
     ctaPrimary: article.ctaPrimary ?? null,
     asinsUsed: article.asinsUsed ?? null,
     status: article.status ?? 'queued',

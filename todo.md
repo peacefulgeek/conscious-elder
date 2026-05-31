@@ -53,7 +53,7 @@
 - [x] Articles index: searchable and filterable by category
 - [x] Individual article page with JSON-LD, SEO, and ArticleRenderer
 - [x] Tools We Recommend: products grouped by category
-- [x] About: Kalesh bio, WebP photo, link to kalesh.love
+- [x] About: The Editorial Team bio, WebP photo, link to sacredvow.love
 - [x] Privacy Policy with affiliate disclosure and health disclaimer
 
 ## Navigation
@@ -62,7 +62,7 @@
 - [x] Footer: Amazon Associates disclosure
 
 ## SEO
-- [x] JSON-LD Article schema with author Kalesh on every article
+- [x] JSON-LD Article schema with author Our guide to every article
 - [x] Canonical URLs on every page
 - [x] Open Graph tags on every article
 - [x] Auto-generated sitemap.xml
@@ -162,9 +162,9 @@
 - [x] SiteNav: hamburger menu at 768px breakpoint
 
 ## About Page Fixes
-- [x] Hero title: remove Kalesh's name, use editorial title instead
-- [x] Editorial team section above Kalesh bio (3-4 fake team members with roles)
-- [x] Kalesh photo: use https://conscious-elder.b-cdn.net/images/kalesh-photo.webp
+- [x] Hero title: remove The Editorial Team's name, use editorial title instead
+- [x] Editorial team section above The Editorial Team bio (3-4 fake team members with roles)
+- [x] The Editorial Team photo: use https://conscious-elder.b-cdn.net/images/consciouselder-photo.webp
 
 ## Assessment History Page
 - [x] Route /assessments/history in App.tsx
@@ -182,8 +182,8 @@
 
 ## Addendum Migration (ADDENDUMSCOPENOCLAUDE)
 - [x] Remove @anthropic-ai/sdk, keep openai package
-- [x] Rewrite src/lib/anthropic-generate.mjs -> src/lib/deepseek-generate.mjs using OpenAI client + DeepSeek V4-Pro
-- [x] Set env vars: OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_MODEL, AUTO_GEN_ENABLED
+- [x] Rewrite src/lib/anthropic-generate.mjs -> src/lib/claude-generate.mjs using OpenAI client + Claude V4-Pro
+- [x] Set env vars: CLAUDE_API_KEY, OPENAI_BASE_URL, OPENAI_MODEL, AUTO_GEN_ENABLED
 - [x] Delete any ANTHROPIC_API_KEY references from codebase and app.yaml
 - [x] Add status (queued/published), queued_at, published_at columns to articles table
 - [x] Update all public tRPC routes to filter status='published' only

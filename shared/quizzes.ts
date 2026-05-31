@@ -21,7 +21,7 @@ export interface QuizQuestion {
 export interface ProductRec {
   asin: string;
   name: string;
-  reason: string; // why Kalesh recommends it for this tier/domain
+  reason: string; // why The Editorial Team recommends it for this tier/domain
   category: string;
 }
 

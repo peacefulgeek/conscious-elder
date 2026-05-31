@@ -114,7 +114,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'Kalesh'"
+          "default": "'The Editorial Team'"
         },
         "ctaPrimary": {
           "name": "ctaPrimary",
@@ -145,8 +145,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "hasKaleshBacklink": {
-          "name": "hasKaleshBacklink",
+        "hasThe Editorial TeamBacklink": {
+          "name": "hasThe Editorial TeamBacklink",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,

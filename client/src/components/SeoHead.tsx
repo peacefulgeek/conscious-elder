@@ -18,8 +18,8 @@ interface SeoHeadProps {
 const BASE_URL = 'https://consciouselder.com';
 const SITE_NAME = 'The Conscious Elder';
 const DEFAULT_OG_IMAGE = 'https://conscious-elder.b-cdn.net/images/og-default.webp';
-const AUTHOR_NAME = 'Kalesh';
-const AUTHOR_URL = 'https://kalesh.love';
+const AUTHOR_NAME = 'The Editorial Team';
+const AUTHOR_URL = 'https://sacredvow.love';
 
 export default function SeoHead({
   title,
@@ -109,7 +109,7 @@ export default function SeoHead({
     setMeta('twitter:image', resolvedOgImage);
     setMeta('twitter:image:alt', ogTitle || fullTitle);
     setMeta('twitter:site', '@consciouselder');
-    setMeta('twitter:creator', '@kalesh');
+    setMeta('twitter:creator', '@consciouselder');
 
     // ── Canonical (UTM-stripped) ──────────────────────────────────────────────
     setLink('canonical', canonical);

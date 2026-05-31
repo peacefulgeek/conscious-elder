@@ -43,7 +43,7 @@ export default function Recommended() {
     <>
       <SeoHead
         title="Tools We Recommend | The Conscious Elder"
-        description="Supplements, herbs, books, and tools Kalesh recommends for conscious aging. All links are affiliate links labeled (paid link)."
+        description="Supplements, herbs, books, and tools The Editorial Team recommends for conscious aging. All links are affiliate links labeled (paid link)."
         canonicalPath="/recommended"
         type="website"
       />
@@ -70,7 +70,7 @@ export default function Recommended() {
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(18,14,10,0.78) 100%)' }} />
         <div style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 2rem 3.5rem' }}>
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'oklch(0.78 0.10 65)', marginBottom: '0.75rem' }}>
-            Curated by Kalesh
+            Curated by The Editorial Team
           </p>
           <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700, color: '#fff', lineHeight: 1.12, marginBottom: '0.875rem' }}>
             Tools We Recommend

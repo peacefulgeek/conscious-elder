@@ -6,7 +6,7 @@ import SeoHead from '@/components/SeoHead';
 import { ArticleJsonLd } from '@/components/JsonLd';
 import ArticleCard from '@/components/ArticleCard';
 
-const KALESH_PHOTO = 'https://conscious-elder.b-cdn.net/images/kalesh-photo.webp';
+const KALESH_PHOTO = 'https://conscious-elder.b-cdn.net/images/consciouselder-photo.webp';
 const KALESH_FALLBACK = 'https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=300&q=80&auto=format&fit=crop&crop=face';
 
 function RelatedArticles({ slug, category }: { slug: string; category?: string | null }) {
@@ -133,7 +133,7 @@ export default function ArticleDetail() {
         type="article"
         publishedAt={article.publishedAt}
         updatedAt={article.updatedAt}
-        author="Kalesh"
+        author="The Editorial Team"
         category={article.category}
       />
       <ArticleJsonLd
@@ -237,13 +237,13 @@ export default function ArticleDetail() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
             <img
               src={KALESH_PHOTO}
-              alt="Kalesh"
+              alt="The Editorial Team"
               onError={e => { (e.currentTarget as HTMLImageElement).src = KALESH_FALLBACK; }}
               style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(255,255,255,0.3)', flexShrink: 0 }}
             />
             <div>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.875rem', fontWeight: 700, color: '#fff', margin: 0 }}>
-                Kalesh
+                The Editorial Team
               </p>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', margin: 0, display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                 {formattedDate && <span>{formattedDate}</span>}
@@ -349,7 +349,7 @@ export default function ArticleDetail() {
               {/* Author photo */}
               <img
                 src={KALESH_PHOTO}
-                alt="Kalesh"
+                alt="The Editorial Team"
                 onError={e => { (e.currentTarget as HTMLImageElement).src = KALESH_FALLBACK; }}
                 style={{
                   width: '88px',
@@ -369,7 +369,7 @@ export default function ArticleDetail() {
                 color: 'oklch(0.18 0.015 240)',
                 marginBottom: '0.25rem',
               }}>
-                Kalesh
+                The Editorial Team
               </p>
 
               {/* Role label */}
@@ -399,7 +399,7 @@ export default function ArticleDetail() {
 
               {/* Book a Session CTA */}
               <a
-                href="https://kalesh.love"
+                href="https://sacredvow.love"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -424,7 +424,7 @@ export default function ArticleDetail() {
 
               {/* Secondary link */}
               <a
-                href="https://kalesh.love"
+                href="https://sacredvow.love"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -436,7 +436,7 @@ export default function ArticleDetail() {
                   paddingBottom: '1px',
                 }}
               >
-                kalesh.love
+                sacredvow.love
               </a>
             </div>
 

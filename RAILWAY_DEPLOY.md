@@ -13,13 +13,13 @@ Set all of the following in Railway → Service → Variables before deploying.
 | `DATABASE_URL` | `mysql://...` | TiDB / PlanetScale / Railway MySQL connection string |
 | `JWT_SECRET` | *(random 64-char string)* | Session cookie signing |
 
-### Content Generation (DeepSeek)
+### Content Generation (Claude)
 
 | Variable | Value | Notes |
 |---|---|---|
-| `OPENAI_API_KEY` | *(your DeepSeek API key)* | From platform.deepseek.com |
-| `OPENAI_BASE_URL` | `https://api.deepseek.com` | DeepSeek OpenAI-compatible endpoint |
-| `OPENAI_MODEL` | `deepseek-chat` | Or `deepseek-v4-pro` if available on your plan |
+| `CLAUDE_API_KEY` | *(your Claude API key)* | From platform.claude.com |
+| `OPENAI_BASE_URL` | `https://api.claude.com` | Claude Anthropic Messages endpoint |
+| `OPENAI_MODEL` | `claude-chat` | Or `claude-v4-pro` if available on your plan |
 | `AUTO_GEN_ENABLED` | `true` | Enables Phase 1/Phase 2 article cron |
 
 ### Amazon Associates
@@ -36,7 +36,7 @@ Set all of the following in Railway → Service → Variables before deploying.
 | `OAUTH_SERVER_URL` | `https://api.manus.im` | Manus OAuth backend |
 | `VITE_OAUTH_PORTAL_URL` | `https://manus.im` | Manus login portal |
 | `OWNER_OPEN_ID` | *(your Manus open ID)* | Owner identity |
-| `OWNER_NAME` | `Kalesh` | Owner display name |
+| `OWNER_NAME` | `The Editorial Team` | Owner display name |
 
 ### Optional / Advanced
 

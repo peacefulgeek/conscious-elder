@@ -43,7 +43,7 @@ export default function Articles() {
     <>
       <SeoHead
         title="Articles | The Conscious Elder"
-        description="All articles on conscious aging, elder wisdom, practice, and the second half of life. Written by Kalesh."
+        description="All articles on conscious aging, elder wisdom, practice, and the second half of life. Written by The Editorial Team."
         canonicalPath="/articles"
         type="website"
       />

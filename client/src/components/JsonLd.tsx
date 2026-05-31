@@ -5,15 +5,15 @@
  *   ArticleJsonLd     - Full Article schema with BreadcrumbList, FAQPage, HowTo, SpeakableSpec
  *   WebsiteJsonLd     - WebSite schema with SearchAction
  *   OrganizationJsonLd - Organization schema (sitewide)
- *   PersonJsonLd      - Person schema for author Kalesh
+ *   PersonJsonLd      - Person schema for author The Editorial Team
  *   CollectionPageJsonLd - CollectionPage + ItemList for articles hub
  *   AboutPageJsonLd   - AboutPage + Organization for about page
  */
 
 const BASE_URL = 'https://consciouselder.com';
 const SITE_NAME = 'The Conscious Elder';
-const AUTHOR_NAME = 'Kalesh';
-const AUTHOR_URL = 'https://kalesh.love';
+const AUTHOR_NAME = 'The Editorial Team';
+const AUTHOR_URL = 'https://sacredvow.love';
 const ORG_LOGO = 'https://conscious-elder.b-cdn.net/images/og-default.webp';
 
 // ── Shared sub-schemas ────────────────────────────────────────────────────────
@@ -23,7 +23,7 @@ const AUTHOR_SCHEMA = {
   name: AUTHOR_NAME,
   url: AUTHOR_URL,
   jobTitle: 'Writer and Conscious Aging Guide',
-  description: 'Kalesh writes about conscious aging, longevity, and the wisdom of the second half of life.',
+  description: 'The Editorial Team writes about conscious aging, longevity, and the wisdom of the second half of life.',
   knowsAbout: ['Conscious Aging', 'Longevity', 'Traditional Chinese Medicine', 'Ayurveda', 'Meditation', 'Elder Wisdom'],
 };
 
@@ -246,7 +246,7 @@ export function WebsiteJsonLd({ name = SITE_NAME, description }: WebsiteJsonLdPr
       name: AUTHOR_NAME,
       url: AUTHOR_URL,
       jobTitle: 'Writer and Conscious Aging Guide',
-      description: 'Kalesh writes about conscious aging, longevity, and the wisdom of the second half of life.',
+      description: 'The Editorial Team writes about conscious aging, longevity, and the wisdom of the second half of life.',
       knowsAbout: ['Conscious Aging', 'Longevity', 'Traditional Chinese Medicine', 'Ayurveda', 'Meditation', 'Elder Wisdom'],
       worksFor: PUBLISHER_SCHEMA,
     },

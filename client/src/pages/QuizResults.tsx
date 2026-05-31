@@ -239,7 +239,7 @@ export default function QuizResults() {
         <main style={{ padding: '3.5rem 2rem 6rem' }}>
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
 
-            {/* Kalesh narrative */}
+            {/* The Editorial Team narrative */}
             <div style={{
               background: '#fff',
               border: '1px solid oklch(0.88 0.015 80)',
@@ -261,15 +261,15 @@ export default function QuizResults() {
                   overflow: 'hidden',
                 }}>
                   <img
-                    src="https://conscious-elder.b-cdn.net/images/kalesh-photo.webp"
-                    alt="Kalesh"
+                    src="https://conscious-elder.b-cdn.net/images/consciouselder-photo.webp"
+                    alt="The Editorial Team"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />
                 </div>
                 <div>
                   <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1rem', fontWeight: 700, color: 'oklch(0.18 0.015 240)', marginBottom: '0.15rem' }}>
-                    A note from Kalesh
+                    A note from The Editorial Team
                   </p>
                   <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.78rem', color: 'oklch(0.55 0.02 240)' }}>
                     {result.domain} Assessment
@@ -298,7 +298,7 @@ export default function QuizResults() {
                   color: 'oklch(0.62 0.12 65)',
                   marginBottom: '0.5rem',
                 }}>
-                  Kalesh Recommends
+                  The Editorial Team Recommends
                 </p>
                 <h2 style={{
                   fontFamily: 'var(--font-serif)',

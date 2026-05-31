@@ -28,7 +28,7 @@ llmsRouter.get('/llms.txt', async (_req, res) => {
       '# The Conscious Elder - Article Index',
       '',
       '> Wisdom, practice, and honest inquiry for those aging with awareness.',
-      '> Written by Kalesh. Published at https://consciouselder.com',
+      '> Written by The Editorial Team. Published at https://consciouselder.com',
       '',
       `> ${articles.length} published articles as of ${new Date().toISOString().split('T')[0]}`,
       '',

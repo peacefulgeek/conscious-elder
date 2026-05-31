@@ -29,7 +29,7 @@ export default function Home() {
     <>
       <SeoHead
         title="The Conscious Elder - Wisdom for the Second Half of Life"
-        description="Wisdom, practice, and honest inquiry for those aging with awareness. Written by Kalesh."
+        description="Wisdom, practice, and honest inquiry for those aging with awareness. Written by The Editorial Team."
         canonicalPath="/"
         type="website"
       />
@@ -122,7 +122,7 @@ export default function Home() {
             }}
           >
             Wisdom, practice, and honest inquiry for those aging with awareness.
-            Written by Kalesh.
+            Written by The Editorial Team.
           </p>
           <Link
             href="/articles"
@@ -318,7 +318,7 @@ export default function Home() {
                         paddingTop: '1.25rem',
                         borderTop: '1px solid oklch(0.92 0.01 80)',
                       }}>
-                        <span style={{ fontWeight: 600, color: 'oklch(0.62 0.12 65)' }}>Kalesh</span>
+                        <span style={{ fontWeight: 600, color: 'oklch(0.62 0.12 65)' }}>The Editorial Team</span>
                         {featured.publishedAt && (
                           <>
                             <span style={{ width: '3px', height: '3px', borderRadius: '50%', background: 'oklch(0.75 0.01 240)', display: 'inline-block' }} />
@@ -418,7 +418,7 @@ export default function Home() {
               lineHeight: 1.75,
               marginBottom: '2rem',
             }}>
-              I'm Kalesh. I write about aging consciously, because I think most of what our culture
+              I'm The Editorial Team. I write about aging consciously, because I think most of what our culture
               tells us about getting older is wrong. Not wrong in a small way. Wrong in a way that
               costs people their last decades. I'm trying to offer something different.
             </p>
@@ -434,7 +434,7 @@ export default function Home() {
                 paddingBottom: '2px',
               }}
             >
-              Read more about Kalesh
+              Read more about The Editorial Team
             </Link>
           </div>
         </section>
@@ -511,12 +511,12 @@ function SiteFooter() {
             </p>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
               <li>
-                <a href="https://kalesh.love" target="_blank" rel="noopener noreferrer"
+                <a href="https://sacredvow.love" target="_blank" rel="noopener noreferrer"
                   style={{ fontFamily: 'var(--font-sans)', fontSize: '0.875rem', color: 'rgba(255,255,255,0.65)', textDecoration: 'none' }}
                   onMouseEnter={e => (e.currentTarget.style.color = 'oklch(0.75 0.10 65)')}
                   onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.65)')}
                 >
-                  kalesh.love
+                  sacredvow.love
                 </a>
               </li>
             </ul>

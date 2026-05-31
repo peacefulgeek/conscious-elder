@@ -13,7 +13,7 @@ interface ArticleCardProps {
 }
 
 export default function ArticleCard({
-  slug, title, metaDescription, category, imageUrl, imageAlt, readingTime, publishedAt, author = 'Kalesh'
+  slug, title, metaDescription, category, imageUrl, imageAlt, readingTime, publishedAt, author = 'The Editorial Team'
 }: ArticleCardProps) {
   const formattedDate = publishedAt
     ? new Date(publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })

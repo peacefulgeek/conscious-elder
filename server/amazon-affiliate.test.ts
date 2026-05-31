@@ -32,11 +32,20 @@ function hasEmDash(text: string): boolean {
 // ─── Quality gate tests ───────────────────────────────────────────────────────
 
 const BANNED_WORDS = [
-  'delve', 'tapestry', 'nuanced', 'multifaceted', 'comprehensive guide',
-  'in conclusion', "it's important to note", 'as an ai', 'i cannot',
-  'navigate the', 'realm of', 'foster', 'leverage', 'utilize', 'embark on',
-  'beacon of', 'testament to', 'pivotal', 'paramount', 'revolutionize',
-  'game-changer', 'cutting-edge', 'paul wagner', 'shrikrishna',
+  "delve", "tapestry", "paradigm", "synergy", "leverage",
+  "unlock", "empower", "utilize", "pivotal", "embark",
+  "underscore", "paramount", "seamlessly", "robust", "beacon",
+  "foster", "elevate", "curate", "curated", "bespoke",
+  "resonate", "harness", "intricate", "plethora", "myriad",
+  "comprehensive", "transformative", "groundbreaking", "innovative",
+  "cutting-edge", "revolutionary", "state-of-the-art", "ever-evolving",
+  "profound", "holistic", "nuanced", "multifaceted", "stakeholders",
+  "ecosystem", "landscape", "realm", "sphere", "domain",
+  "furthermore", "moreover", "additionally", "consequently",
+  "subsequently", "thereby", "streamline", "optimize", "facilitate",
+  "amplify", "catalyze", "framework", "implement", "spearhead",
+  "bolster", "underpin", "cornerstone", "catalyst", "testament",
+  "unleash",
 ];
 
 function hasBannedWord(text: string): string | null {
@@ -150,7 +159,7 @@ describe("Quality gate banned words", () => {
     expect(hasBannedWord("shrikrishna.com")).toBe('shrikrishna');
   });
 
-  it("passes clean Kalesh-voice text", () => {
+  it("passes clean The Editorial Team-voice text", () => {
     const text = `I've been thinking about this for years. Getting older is strange.
     You don't expect to feel so much like yourself, and yet so different.
     The supplements I take now are different from what I took at fifty.

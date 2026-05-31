@@ -30,7 +30,7 @@ export default function Assessments() {
     <>
       <SeoHead
         title="Life Assessments | The Conscious Elder"
-        description="Six honest assessments covering every dimension of conscious aging: body, mind, emotion, spirit, connection, and legacy. Written by Kalesh."
+        description="Six honest assessments covering every dimension of conscious aging: body, mind, emotion, spirit, connection, and legacy. Written by The Editorial Team."
         canonicalPath="/assessments"
         type="website"
       />
@@ -67,7 +67,7 @@ export default function Assessments() {
             "I built these assessments because I kept meeting elders who were doing some things beautifully and struggling in ways they hadn't named yet. These questions are designed to help you see yourself clearly, without judgment, and to point you toward what might actually help."
           </p>
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.85rem', color: 'oklch(0.62 0.12 65)', fontWeight: 600, marginTop: '1rem', letterSpacing: '0.04em' }}>
-            Kalesh
+            The Editorial Team
           </p>
         </div>
       </div>

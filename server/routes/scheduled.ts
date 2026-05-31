@@ -117,7 +117,7 @@ async function refreshArticleWithClaude(article: { id: number; slug: string; tit
 
   const client = new Anthropic({ apiKey });
 
-  const prompt = `You are the voice of The Conscious Elder — a publication for people aging with awareness, written by Kalesh.
+  const prompt = `You are the voice of The Conscious Elder — a publication for people aging with awareness, written by The Editorial Team.
 
 HARD RULES (never break these):
 - NO em-dashes (— or –). Use commas, periods, or colons instead.
@@ -131,7 +131,7 @@ HARD RULES (never break these):
 - Every Amazon affiliate link must use tag=spankyspinola-20 and be labeled "(paid link)"
 - Word count: 1800-2400 words
 - Use HTML formatting (h2, h3, p, ul, ol, blockquote, strong, em)
-- End with a warm, personal conclusion that references Kalesh's own journey
+- End with a warm, personal conclusion that references The Editorial Team's own journey
 
 ARTICLE TO REFRESH:
 Title: ${article.title}

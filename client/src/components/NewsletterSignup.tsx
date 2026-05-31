@@ -80,7 +80,7 @@ export default function NewsletterSignup() {
             marginBottom: '2rem',
           }}
         >
-          No schedule, no algorithm. Just a quiet note when Kalesh has written something worth reading.
+          No schedule, no algorithm. Just a quiet note when The Editorial Team has written something worth reading.
         </p>
 
         {status === 'success' ? (

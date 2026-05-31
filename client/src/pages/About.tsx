@@ -4,7 +4,7 @@ import SeoHead from '@/components/SeoHead';
 import { AboutPageJsonLd } from '@/components/JsonLd';
 
 const HERO_IMAGE = 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1600&q=85&auto=format&fit=crop&crop=center';
-const KALESH_PHOTO = 'https://conscious-elder.b-cdn.net/images/kalesh-photo.webp';
+const KALESH_PHOTO = 'https://conscious-elder.b-cdn.net/images/consciouselder-photo.webp';
 const KALESH_FALLBACK = 'https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=600&q=80&auto=format&fit=crop&crop=face';
 
 const EDITORIAL_TEAM = [
@@ -131,20 +131,20 @@ export default function About() {
           {/* Divider */}
           <div style={{ borderTop: '1px solid oklch(0.88 0.015 80)', marginBottom: '4rem' }} />
 
-          {/* Kalesh section */}
+          {/* The Editorial Team section */}
           <div style={{ marginBottom: '3.5rem' }}>
             <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'oklch(0.62 0.12 65)', marginBottom: '0.6rem' }}>
               Founding Voice
             </p>
             <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, color: 'oklch(0.18 0.015 240)', marginBottom: '2.5rem', lineHeight: 1.2 }}>
-              Written by Kalesh.
+              Written by The Editorial Team.
             </h2>
 
             <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', gap: '3.5rem', alignItems: 'start' }} className="about-grid">
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
                 <img
                   src={KALESH_PHOTO}
-                  alt="Kalesh, founding voice of The Conscious Elder"
+                  alt="The Editorial Team, founding voice of The Conscious Elder"
                   onError={e => { (e.currentTarget as HTMLImageElement).src = KALESH_FALLBACK; }}
                   style={{
                     width: '240px',
@@ -157,14 +157,14 @@ export default function About() {
                   }}
                 />
                 <div style={{ marginTop: '1.25rem' }}>
-                  <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.1rem', fontWeight: 700, color: 'oklch(0.18 0.015 240)', marginBottom: '0.25rem' }}>Kalesh</p>
+                  <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.1rem', fontWeight: 700, color: 'oklch(0.18 0.015 240)', marginBottom: '0.25rem' }}>The Editorial Team</p>
                   <a
-                    href="https://kalesh.love"
+                    href="https://sacredvow.love"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ fontFamily: 'var(--font-sans)', fontSize: '0.875rem', color: 'oklch(0.52 0.12 65)', textDecoration: 'none', borderBottom: '1px solid oklch(0.52 0.12 65)', paddingBottom: '1px' }}
                   >
-                    kalesh.love
+                    sacredvow.love
                   </a>
                 </div>
               </div>
@@ -190,12 +190,12 @@ export default function About() {
                   <p>
                     If you want more of my work on consciousness and inner life, you can find it at{' '}
                     <a
-                      href="https://kalesh.love"
+                      href="https://sacredvow.love"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ color: 'oklch(0.52 0.12 65)', textDecoration: 'underline', textDecorationColor: 'oklch(0.52 0.12 65 / 0.4)' }}
                     >
-                      kalesh.love
+                      sacredvow.love
                     </a>.
                   </p>
                 </div>
@@ -240,12 +240,12 @@ export default function About() {
               Read the Articles
             </Link>
             <a
-              href="https://kalesh.love"
+              href="https://sacredvow.love"
               target="_blank"
               rel="noopener noreferrer"
               style={{ display: 'inline-block', padding: '0.875rem 2rem', border: '1px solid oklch(0.88 0.015 80)', color: 'oklch(0.35 0.02 240)', fontFamily: 'var(--font-sans)', fontSize: '0.875rem', fontWeight: 500, borderRadius: '0.375rem', textDecoration: 'none' }}
             >
-              Visit kalesh.love
+              Visit sacredvow.love
             </a>
           </div>
         </div>
