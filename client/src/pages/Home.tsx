@@ -511,12 +511,12 @@ function SiteFooter() {
             </p>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
               <li>
-                <a href="https://sacredvow.love" target="_blank" rel="noopener noreferrer"
+                <a href="https://shrikrishna.com" target="_blank" rel="noopener noreferrer"
                   style={{ fontFamily: 'var(--font-sans)', fontSize: '0.875rem', color: 'rgba(255,255,255,0.65)', textDecoration: 'none' }}
                   onMouseEnter={e => (e.currentTarget.style.color = 'oklch(0.75 0.10 65)')}
                   onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.65)')}
                 >
-                  sacredvow.love
+                  shrikrishna.com
                 </a>
               </li>
             </ul>

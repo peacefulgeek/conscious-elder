@@ -159,12 +159,12 @@ export default function About() {
                 <div style={{ marginTop: '1.25rem' }}>
                   <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.1rem', fontWeight: 700, color: 'oklch(0.18 0.015 240)', marginBottom: '0.25rem' }}>The Editorial Team</p>
                   <a
-                    href="https://sacredvow.love"
+                    href="https://shrikrishna.com"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ fontFamily: 'var(--font-sans)', fontSize: '0.875rem', color: 'oklch(0.52 0.12 65)', textDecoration: 'none', borderBottom: '1px solid oklch(0.52 0.12 65)', paddingBottom: '1px' }}
                   >
-                    sacredvow.love
+                    shrikrishna.com
                   </a>
                 </div>
               </div>
@@ -190,12 +190,12 @@ export default function About() {
                   <p>
                     If you want more of my work on consciousness and inner life, you can find it at{' '}
                     <a
-                      href="https://sacredvow.love"
+                      href="https://shrikrishna.com"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ color: 'oklch(0.52 0.12 65)', textDecoration: 'underline', textDecorationColor: 'oklch(0.52 0.12 65 / 0.4)' }}
                     >
-                      sacredvow.love
+                      shrikrishna.com
                     </a>.
                   </p>
                 </div>
@@ -240,12 +240,12 @@ export default function About() {
               Read the Articles
             </Link>
             <a
-              href="https://sacredvow.love"
+              href="https://shrikrishna.com"
               target="_blank"
               rel="noopener noreferrer"
               style={{ display: 'inline-block', padding: '0.875rem 2rem', border: '1px solid oklch(0.88 0.015 80)', color: 'oklch(0.35 0.02 240)', fontFamily: 'var(--font-sans)', fontSize: '0.875rem', fontWeight: 500, borderRadius: '0.375rem', textDecoration: 'none' }}
             >
-              Visit sacredvow.love
+              Visit shrikrishna.com
             </a>
           </div>
         </div>

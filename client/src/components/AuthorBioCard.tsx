@@ -20,8 +20,8 @@ export default function AuthorBioCard() {
         </p>
         <p className="author-bio-card__text" style={{ marginTop: '0.5rem' }}>
           He writes more about consciousness and inner work at{' '}
-          <a href="https://sacredvow.love" target="_blank" rel="noopener" className="author-bio-card__link">
-            sacredvow.love
+          <a href="https://shrikrishna.com" target="_blank" rel="noopener" className="author-bio-card__link">
+            shrikrishna.com
           </a>.
         </p>
       </div>

@@ -106,8 +106,8 @@ export default function Privacy() {
               </h2>
               <p>
                 Questions about this policy can be directed to the site owner via the contact information available at{' '}
-                <a href="https://sacredvow.love" target="_blank" rel="noopener" style={{ color: 'oklch(0.62 0.12 65)' }}>
-                  sacredvow.love
+                <a href="https://shrikrishna.com" target="_blank" rel="noopener" style={{ color: 'oklch(0.62 0.12 65)' }}>
+                  shrikrishna.com
                 </a>.
               </p>
             </section>

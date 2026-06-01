@@ -53,7 +53,7 @@
 - [x] Articles index: searchable and filterable by category
 - [x] Individual article page with JSON-LD, SEO, and ArticleRenderer
 - [x] Tools We Recommend: products grouped by category
-- [x] About: The Editorial Team bio, WebP photo, link to sacredvow.love
+- [x] About: The Editorial Team bio, WebP photo, link to shrikrishna.com
 - [x] Privacy Policy with affiliate disclosure and health disclaimer
 
 ## Navigation

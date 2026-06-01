@@ -399,7 +399,7 @@ export default function ArticleDetail() {
 
               {/* Book a Session CTA */}
               <a
-                href="https://sacredvow.love"
+                href="https://shrikrishna.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -424,7 +424,7 @@ export default function ArticleDetail() {
 
               {/* Secondary link */}
               <a
-                href="https://sacredvow.love"
+                href="https://shrikrishna.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -436,7 +436,7 @@ export default function ArticleDetail() {
                   paddingBottom: '1px',
                 }}
               >
-                sacredvow.love
+                shrikrishna.com
               </a>
             </div>
 

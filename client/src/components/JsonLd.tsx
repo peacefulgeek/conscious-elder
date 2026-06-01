@@ -13,7 +13,7 @@
 const BASE_URL = 'https://consciouselder.com';
 const SITE_NAME = 'The Conscious Elder';
 const AUTHOR_NAME = 'The Editorial Team';
-const AUTHOR_URL = 'https://sacredvow.love';
+const AUTHOR_URL = 'https://shrikrishna.com';
 const ORG_LOGO = 'https://conscious-elder.b-cdn.net/images/og-default.webp';
 
 // ── Shared sub-schemas ────────────────────────────────────────────────────────
