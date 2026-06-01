@@ -62,7 +62,7 @@ Railway auto-detects `nixpacks.toml` and `railway.json`. No manual configuration
 
 | Job | Phase 1 (<60 published) | Phase 2 (≥60 published) |
 |---|---|---|
-| Article publisher | 5×/day: 07, 10, 13, 16, 19 UTC | 1×/weekday: 08:00 UTC Mon–Fri |
+| Article publisher | 5×/day: 07, 10, 13, 16, 19 UTC | 4×/week: 09:00 UTC Mon/Tue/Thu/Fri |
 | Product spotlight | Saturday 08:00 UTC | (same) |
 | Monthly refresh | 1st of month 03:00 UTC | (same) |
 | Quarterly refresh | Jan/Apr/Jul/Oct 1st 04:00 UTC | (same) |

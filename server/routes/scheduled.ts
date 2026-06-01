@@ -4,9 +4,10 @@
  * Active crons (registered via manus-heartbeat):
  *
  * /api/scheduled/promote-article  [weekday-promote-article]
- *   - Mon-Fri 09:00 UTC
+ *   - Mon/Tue/Thu/Fri 09:00 UTC (4 per week)
  *   - Picks oldest queued article, assigns hero image, stamps publishedAt
  *   - Stops gracefully when queue is empty. No fallback generation.
+ *   - Skips Wednesday to maintain 4/week cadence.
  *
  * /api/scheduled/quarterly-refresh  [quarterly-article-refresh]
  *   - Jan/Apr/Jul/Oct 1st at 04:00 UTC
@@ -46,9 +47,17 @@ async function assignHeroImage(slug: string): Promise<string> {
   }
 }
 
-// ── Promote: publish 1 queued article per trigger ────────────────────────────
+// ── Promote: publish 1 queued article per trigger (4/week: Mon,Tue,Thu,Fri) ──
 scheduledRouter.post('/promote-article', async (_req, res) => {
   try {
+    // Only publish on Mon(1), Tue(2), Thu(4), Fri(5) — skip Wed(3) for 4/week cadence
+    const dayOfWeek = new Date().getUTCDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+    const publishDays = [1, 2, 4, 5]; // Mon, Tue, Thu, Fri
+    if (!publishDays.includes(dayOfWeek)) {
+      console.log(`[promote] Skipping — today is day ${dayOfWeek}, only publishing on Mon/Tue/Thu/Fri`);
+      return res.json({ success: true, published: false, reason: 'not_publish_day' });
+    }
+
     const { getNextQueuedArticle, publishQueuedArticle, getQueuedArticleCount } = await import('../bunny-store');
     const queuedCount = await getQueuedArticleCount();
     if (queuedCount === 0) {
