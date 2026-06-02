@@ -16,6 +16,7 @@ import Assessments from "./pages/Assessments";
 import Quiz from "./pages/Quiz";
 import QuizResults from './pages/QuizResults';
 import AssessmentHistory from './pages/AssessmentHistory';
+import NewsletterPopup from "@/components/NewsletterPopup";
 
 function Router() {
   return (
@@ -51,4 +52,5 @@ function App() {
   );
 }
 
+      <NewsletterPopup />
 export default App;
